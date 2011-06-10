@@ -18,7 +18,7 @@ And add the following line
 ## Commands
 
     coffee-clean # cleans the generated JavaScript files under the coffee-target path
-    coffee # compiles any stail *.coffee sources
+    coffee # compiles any stale *.coffee sources
 
 This plugin also piggybacks on the `compile` task, generating new JavaScript sources from stale CoffeeScript files
 
