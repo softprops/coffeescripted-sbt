@@ -8,7 +8,7 @@ In you project, define a file for plugin library dependencies `project/plugins/b
 
 And add the following line
 
-    libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.0-SNAPSHOT"
+    libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.0"
 
 ## Settings
 
