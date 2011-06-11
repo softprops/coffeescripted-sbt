@@ -15,9 +15,8 @@ And add the following lines
 ## Settings
 
     coffee-bare # removes function wrapper from generated JavaScript sources
-
     coffee-source # directory containing CoffeeScript sources. defaults to src/main/coffeescript
-    coffee-target # target directory for generated JavaScript sources. defaults to src/main/www/js that will be under target/{scala_version}
+    coffee-target # target directory for generated JavaScript sources. defaults to src/main/www/js under target/{scala_version}/resource_managed
 
 ## Commands
 
