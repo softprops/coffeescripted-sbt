@@ -10,17 +10,15 @@ import org.jcoffeescript.JCoffeeScriptCompiler
 
 object CoffeesScript extends Plugin {
 
-  type Compiler = { def compile(src: String): String }
-
   val coffeeSource = SettingKey[File]("coffee-source", "Directory containing coffee files.")
   val coffeeTarget = SettingKey[File]("coffee-target", "Output directory for translated coffee scripts.")
   val coffeeClean = TaskKey[Unit]("coffee-clean", "Clean just the files generated from coffee sources.")
   val coffee = TaskKey[Unit]("coffee", "Compile the coffee sources.")
 
-  private lazy val compiler: Compiler = new JCoffeeScriptCompiler()
+  private def compiler = new JCoffeeScriptCompiler()
 
   private def base(file: File) =
-    file.getName.toString.substring(0, file.getName.toString.lastIndexOf("."))
+    file.getName.substring(0, file.getName.lastIndexOf("."))
 
   private def javascript(coffee: File, targetDir: File) =
     new File(targetDir, base(coffee) + ".js")
@@ -35,16 +33,20 @@ object CoffeesScript extends Plugin {
         javascript(coffee, target),
         compiler.compile(io.Source.fromFile(coffee).mkString)
       )
-    } catch { case e =>
-      out.warn("error occured while compiling %s: %s" format(coffee, e))
+      out.info("wrote file to %s" format javascript(coffee, target))
+    } catch { case e: Exception =>
+      //out.warn("error occured while compiling %s: %s" format(coffee, e))
+      throw new RuntimeException(
+        "error occured while compiling %s: %s" format(coffee, e.getMessage), e
+      )
     }
 
-  private def compileChanged(sources: File, target: File, out: Logger) = {
-    for (coffee <- sources.listFiles
-         if (outdated(coffee, javascript(coffee, target))))
+  private def compileChanged(sources: File, target: File, out: Logger) =
+    for (coffee <- (sources * "*").get
+      if (outdated(coffee, javascript(coffee, target)))) yield {
         compile(coffee, target, out)
-    Seq() // avoiding invoking scalac on js files
-  }
+        target
+      }
 
   private def coffeeCleanTask: Initialize[Task[Unit]] =
     (streams, coffeeTarget) map {
@@ -67,12 +69,12 @@ object CoffeesScript extends Plugin {
 
   /** these commands will be automatically added to projects using plugin */
   override def settings = Seq (
-    coffeeSource <<= (baseDirectory) { new File(_, "/src/main/coffee") },
-    coffeeTarget <<= (baseDirectory) { new File(_, "/src/main/www/js") },
+    coffeeSource <<= (sourceDirectory in Compile) { _ / "coffee" },
+    coffeeTarget <<= (resourceManaged in Compile) { _ / "www" / "js" },
     cleanFiles <+= (coffeeTarget) { t => t },
     coffeeClean <<= coffeeCleanTask,
     coffee <<= coffeeTask,
-    sourceGenerators in Compile <+= coffeeSourceGeneratorTask
+    resourceGenerators in Compile <+= coffeeSourceGeneratorTask
   )
 
 }
