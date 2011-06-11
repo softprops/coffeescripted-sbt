@@ -6,7 +6,9 @@ In the tradition of [CoffeeScript Plugins](https://github.com/rubbish/coffee-scr
 
 In you project, define a file for plugin library dependencies `project/plugins/build.sbt`
 
-And add the following line
+And add the following lines
+
+    resolvers += "less is" at "http://repo.lessis.me"
 
     libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.0"
 
