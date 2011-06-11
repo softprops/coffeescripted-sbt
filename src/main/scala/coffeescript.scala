@@ -2,7 +2,6 @@ package coffeescript
 
 import sbt._
 import Keys._
-import Process._
 import Project.Initialize
 
 import java.io.File
@@ -20,27 +19,31 @@ object CoffeesScript extends Plugin {
 
   private lazy val compiler: Compiler = new JCoffeeScriptCompiler()
 
-  private def base (file: File) = file.getName.toString.substring(0, file.getName.toString.lastIndexOf("."))
+  private def base(file: File) =
+    file.getName.toString.substring(0, file.getName.toString.lastIndexOf("."))
 
   private def javascript(coffee: File, targetDir: File) =
     new File(targetDir, base(coffee) + ".js")
 
-  private def outdated (coffee: File, javascript: File) =
-    (! javascript.exists) || (coffee.lastModified > javascript.lastModified)
+  private def outdated(coffee: File, javascript: File) =
+    !javascript.exists || coffee.lastModified > javascript.lastModified
 
-  private def compile (coffee: File, target: File, out: Logger) =
+  private def compile(coffee: File, target: File, out: Logger) =
     try {
       out.info("compiling %s" format coffee)
-      IO.write(javascript(coffee, target), compiler.compile(io.Source.fromFile(coffee).mkString))
+      IO.write(
+        javascript(coffee, target),
+        compiler.compile(io.Source.fromFile(coffee).mkString)
+      )
     } catch { case e =>
-       out.warn("error occured while compiling %s: %s" format(coffee, e))
+      out.warn("error occured while compiling %s: %s" format(coffee, e))
     }
 
-  private def compileChanged (sources: File, target: File, out: Logger) = {
-    for (coffee <- sources.listFiles)
-      if (outdated(coffee, javascript(coffee, target)))
+  private def compileChanged(sources: File, target: File, out: Logger) = {
+    for (coffee <- sources.listFiles
+         if (outdated(coffee, javascript(coffee, target))))
         compile(coffee, target, out)
-    Seq()
+    Seq() // avoiding invoking scalac on js files
   }
 
   private def coffeeCleanTask: Initialize[Task[Unit]] =
@@ -49,9 +52,6 @@ object CoffeesScript extends Plugin {
         out.log.info("Cleaning " + target)
         IO.delete(target)
     }
-
-  // Note: the sourceGenerator task returns an empty list because we
-  // don't want SBT to invoke the scala compiler on Javscript files.
 
   private def coffeeSourceGeneratorTask: Initialize[Task[Seq[File]]] =
     (streams, coffeeSource, coffeeTarget) map {
@@ -65,11 +65,11 @@ object CoffeesScript extends Plugin {
         compileChanged(sourceDir, targetDir, out.log)
     }
 
-  /** this will be commands will be automatically added to projects using plugin */
+  /** these commands will be automatically added to projects using plugin */
   override def settings = Seq (
-    coffeeSource <<= (baseDirectory) { (d) => new File(d, "/src/main/coffee") },
-    coffeeTarget <<= (baseDirectory) { (d) => new File(d, "/src/main/www/js") },
-    cleanFiles <+= (coffeeTarget) { (t) => t},
+    coffeeSource <<= (baseDirectory) { new File(_, "/src/main/coffee") },
+    coffeeTarget <<= (baseDirectory) { new File(_, "/src/main/www/js") },
+    cleanFiles <+= (coffeeTarget) { t => t },
     coffeeClean <<= coffeeCleanTask,
     coffee <<= coffeeTask,
     sourceGenerators in Compile <+= coffeeSourceGeneratorTask
