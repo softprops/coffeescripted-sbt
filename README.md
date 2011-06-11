@@ -20,7 +20,7 @@ And add the following line
     coffee-clean # cleans the generated JavaScript files under the coffee-target path
     coffee # compiles any stale *.coffee sources
 
-This plugin also piggybacks on the `compile` task, generating new JavaScript sources from stale CoffeeScript files
+This plugin also piggybacks on the `compile` task, generating new JavaScript sources from stale CoffeeScript files and appends the `coffee-target` to Sbt's `cleanFiles` task which will remove generated JavaScript sources on a `clean`.
 
 ## Props
 
