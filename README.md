@@ -14,15 +14,17 @@ And add the following lines
 
 ## Settings
 
+    coffee-bare # removes function wrapper from generated JavaScript sources
+
     coffee-source # directory containing CoffeeScript sources. defaults to src/main/coffeescript
-    coffee-target # target directory for generated JavaScript sources. defaults to src/main/www/js
+    coffee-target # target directory for generated JavaScript sources. defaults to src/main/www/js that will be under target/{scala_version}
 
 ## Commands
 
     coffee-clean # cleans the generated JavaScript files under the coffee-target path
     coffee # compiles any stale *.coffee sources
 
-This plugin also piggybacks on the `compile` task, generating new JavaScript sources from stale CoffeeScript files and appends the `coffee-target` to Sbt's `cleanFiles` task which will remove generated JavaScript sources on a `clean`.
+This plugin also piggybacks on [resourceGenerator](https://github.com/harrah/xsbt/blob/0.10/main/Defaults.scala#L126) tasks which will trigger the [coffee] task
 
 ## Props
 
