@@ -1,0 +1,25 @@
+[CoffeeScript](http://jashkenas.github.com/coffee-script/) source compilation for [sbt 0.10.0](http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-tools.sbt/sbt-launch/0.10.0/sbt-launch.jar) and beyond
+
+* fixed issues with nested CoffeeScript source directories
+* actual error handling
+* prefer a managed resource output path
+* made better use of sbt 0.10.0 idioms
+* don't share reference to CoffeeScript compiler
+
+### Basic use
+
+Add `coffeescripted-sbt` to your plugin chain
+
+    cat foo/project/plugins/build.sbt
+
+    resolvers += "less is" at "http://repo.lessis.me"
+
+    libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.1"
+
+This will put the tasks `coffee` and `coffee-clean` in scope.
+
+The plugin can be customized by changing the settings `coffee-source`, `coffee-target` and `coffee-bare`.
+
+### Thanks
+
+Based on the original [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope)

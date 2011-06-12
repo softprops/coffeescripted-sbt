@@ -10,7 +10,7 @@ And add the following lines
 
     resolvers += "less is" at "http://repo.lessis.me"
 
-    libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.0"
+    libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.1"
 
 ## Settings
 
@@ -27,6 +27,6 @@ This plugin also piggybacks on [resourceGenerator](https://github.com/harrah/xsb
 
 ## Props
 
-This was converted into a plugin from based on a  [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.0
+This was converted into a plugin from based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.0
 
 Doug Tangren (softprops) 2011
