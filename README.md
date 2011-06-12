@@ -2,6 +2,8 @@
 
 In the tradition of [CoffeeScript Plugins](https://github.com/rubbish/coffee-script-sbt-plugin), this Sbt plugin compiles [CoffeeScript](http://jashkenas.github.com/coffee-script/) Sources into JavaScript.
 
+![CoffeeScript](http://jashkenas.github.com/coffee-script/documentation/images/logo.png) + ![Scala](http://cloud.github.com/downloads/softprops/coffeescripted-sbt/scala_logo.png)
+
 ## Install
 
 In you project, define a file for plugin library dependencies `project/plugins/build.sbt`
