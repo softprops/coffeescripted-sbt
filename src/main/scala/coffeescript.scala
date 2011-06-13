@@ -49,7 +49,7 @@ object CoffeesScript extends Plugin {
       }) match {
         case Nil =>
           out.info("No CoffeeScripts to compile")
-          Nil
+          (target ** "*.js").get
         case xs =>
           out.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
           xs map compile(sources, target, compiler, out)
