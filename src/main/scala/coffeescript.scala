@@ -53,6 +53,7 @@ object CoffeesScript extends Plugin {
         case xs =>
           out.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
           xs map compile(sources, target, compiler, out)
+          (target ** "*.js").get
       }
 
   private def coffeeCleanTask =
