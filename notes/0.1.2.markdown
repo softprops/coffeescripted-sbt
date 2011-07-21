@@ -1,0 +1,12 @@
+* When no files need updating, return add the generated files to the cp [n8han](http://github.com/n8han)
+
+* new wave sbt versioning. sbt version will now be appended to the library version
+
+    version <<= sbtVersion("0.1.2-%s" format _)
+
+* uses a proper config.
+
+All keys are defined under the `coffee` namespace. The primary `coffee` task is available in the global scope.
+
+* small refactorings
+
