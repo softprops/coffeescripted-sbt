@@ -19,5 +19,9 @@ All keys are defined under the `coffee` namespace. The primary `coffee` task is 
      coffee       -> coffee or coffee:coffee
 
 
+* no more auto include setting magic, explicitly inject coffee keys. In your `build.sbt` file add the following line
+
+    seq(coffeescript.CoffeeScript.coffeeSettings : _*)
+
 * small refactorings
 

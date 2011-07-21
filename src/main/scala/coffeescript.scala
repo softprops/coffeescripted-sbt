@@ -80,8 +80,7 @@ object CoffeeScript extends Plugin {
 
   private def compiler(bare: Boolean) =  new JCoffeeScriptCompiler(if(bare) Option.BARE :: Nil else Nil)
 
-  /** these commands will be automatically added to projects using plugin */
-  override def settings = inConfig(Coffee)(Seq(
+  def coffeeSettings: Seq[Setting[_]] = inConfig(Coffee)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
     targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
     sources <<= coffeeSourcesTask,
