@@ -10,5 +10,14 @@ All keys are defined under the `coffee` namespace. The primary `coffee` task is 
 
 * `coffee:coffee-target` now defaults to path `target/scala-2.8.1.final/resource_managed/main/js`
 
+* use simpler key names based on sbt conventions
+
+    coffee-clean  -> coffee:clean
+    coffee-source -> coffee:source-directory
+    coffee-target -> coffee:target-directory
+          -       -> coffee:sources
+     coffee       -> coffee or coffee:coffee
+
+
 * small refactorings
 

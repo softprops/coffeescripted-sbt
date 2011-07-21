@@ -17,9 +17,10 @@ object CoffeeScript extends Plugin {
   type Compiler = { def compile(src: String): String }
 
   val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
-  val coffeeClean = TaskKey[Unit]("coffee-clean", "Clean compiled coffee sources.")
-  val coffeeSource = SettingKey[File]("coffee-source", "Directory containing coffee sources.")
-  val coffeeTarget = SettingKey[File]("coffee-target", "Output directory for compiled coffee sources.")
+  val clean = TaskKey[Unit]("clean", "Clean compiled coffee sources.")
+  val sources = TaskKey[Seq[File]]("sources", "List of coffee source files")
+  val sourceDirectory = SettingKey[File]("source-directory", "Directory containing coffee sources.")
+  val targetDirectory = SettingKey[File]("target-directory", "Output directory for compiled coffee sources.")
   val coffeeBare = SettingKey[Boolean]("coffee-bare", "Compile coffee sources without top-level function wrapper.")
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
@@ -60,27 +61,33 @@ object CoffeeScript extends Plugin {
       }
 
   private def coffeeCleanTask =
-    (streams, coffeeTarget) map {
+    (streams, targetDirectory) map {
       (out, target) =>
         out.log.info("Cleaning generated JavaScript under " + target)
         IO.delete(target)
     }
 
   private def coffeeSourceGeneratorTask =
-    (streams, coffeeSource, coffeeTarget, coffeeBare) map {
+    (streams, sourceDirectory, targetDirectory, coffeeBare) map {
       (out, sourceDir, targetDir, bare) =>
         compileChanged(sourceDir, targetDir, compiler(bare), out.log)
+    }
+
+  private def coffeeSourcesTask =
+    (sourceDirectory) map { (sourceDir) =>
+      (sourceDir ** "*.coffee").get
     }
 
   private def compiler(bare: Boolean) =  new JCoffeeScriptCompiler(if(bare) Option.BARE :: Nil else Nil)
 
   /** these commands will be automatically added to projects using plugin */
   override def settings = inConfig(Coffee)(Seq(
-    coffeeSource <<= (sourceDirectory in Compile) { _ / "coffee" },
-    coffeeTarget <<= (resourceManaged in Compile) { _ / "js" },
+    sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
+    targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
+    sources <<= coffeeSourcesTask,
     coffeeBare := false,
-    cleanFiles <+= coffeeTarget.identity,
-    coffeeClean <<= coffeeCleanTask,
+    cleanFiles <+= targetDirectory.identity,
+    clean <<= coffeeCleanTask,
     coffee <<= coffeeSourceGeneratorTask,
     resourceGenerators in Compile <+= coffee.identity
   )) ++ Seq(
