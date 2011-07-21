@@ -10,15 +10,18 @@ import java.io.File
 
 import org.jcoffeescript.{JCoffeeScriptCompiler, Option}
 
-object CoffeesScript extends Plugin {
+object CoffeeScript extends Plugin {
+
+  var Coffee = config("coffee") extend(Runtime)
 
   type Compiler = { def compile(src: String): String }
 
-  val coffeeSource = SettingKey[File]("coffee-source", "Directory containing coffee files.")
-  val coffeeTarget = SettingKey[File]("coffee-target", "Output directory for translated coffee scripts.")
-  val coffeeBare = SettingKey[Boolean]("coffee-bare", "Compile JavaScript without top-level function wrapper.")
-  val coffeeClean = TaskKey[Unit]("coffee-clean", "Clean just the files generated from coffee sources.")
-  val coffee = TaskKey[Seq[File]]("coffee", "Compile the coffee sources.")
+  val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
+  val coffeeClean = TaskKey[Unit]("coffee-clean", "Clean compiled coffee sources.")
+
+  val coffeeSource = SettingKey[File]("coffee-source", "Directory containing coffee sources.")
+  val coffeeTarget = SettingKey[File]("coffee-target", "Output directory for compiled coffee sources.")
+  val coffeeBare = SettingKey[Boolean]("coffee-bare", "Compile coffee sources without top-level function wrapper.")
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
     new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js"))
@@ -71,7 +74,7 @@ object CoffeesScript extends Plugin {
   private def compiler(bare: Boolean) =  new JCoffeeScriptCompiler(if(bare) Option.BARE :: Nil else Nil)
 
   /** these commands will be automatically added to projects using plugin */
-  override def settings = Seq (
+  override def settings = inConfig(Coffee)(Seq(
     coffeeSource <<= (sourceDirectory in Compile) { _ / "coffee" },
     coffeeTarget <<= (resourceManaged in Compile) { _ / "www" / "js" },
     coffeeBare := false,
@@ -79,6 +82,8 @@ object CoffeesScript extends Plugin {
     coffeeClean <<= coffeeCleanTask,
     coffee <<= coffeeSourceGeneratorTask,
     resourceGenerators in Compile <+= coffee.identity
+  )) ++ Seq(
+    coffee <<= (coffee in Coffee).identity
   )
 
 }
