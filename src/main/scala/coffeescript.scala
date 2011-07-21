@@ -77,7 +77,7 @@ object CoffeeScript extends Plugin {
   /** these commands will be automatically added to projects using plugin */
   override def settings = inConfig(Coffee)(Seq(
     coffeeSource <<= (sourceDirectory in Compile) { _ / "coffee" },
-    coffeeTarget <<= (resourceManaged in Compile) { _ / "www" / "js" },
+    coffeeTarget <<= (resourceManaged in Compile) { _ / "js" },
     coffeeBare := false,
     cleanFiles <+= coffeeTarget.identity,
     coffeeClean <<= coffeeCleanTask,

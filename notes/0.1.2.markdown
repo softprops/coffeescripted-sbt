@@ -8,5 +8,7 @@
 
 All keys are defined under the `coffee` namespace. The primary `coffee` task is available in the global scope.
 
+* `coffee:coffee-target` now defaults to path `target/scala-2.8.1.final/resource_managed/main/js`
+
 * small refactorings
 
