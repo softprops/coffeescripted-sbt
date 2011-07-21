@@ -18,21 +18,17 @@ object CoffeeScript extends Plugin {
 
   val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
   val coffeeClean = TaskKey[Unit]("coffee-clean", "Clean compiled coffee sources.")
-
   val coffeeSource = SettingKey[File]("coffee-source", "Directory containing coffee sources.")
   val coffeeTarget = SettingKey[File]("coffee-target", "Output directory for compiled coffee sources.")
   val coffeeBare = SettingKey[Boolean]("coffee-bare", "Compile coffee sources without top-level function wrapper.")
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
-    new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js"))
+    Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
 
-  private def outdated(coffee: File, javascript: File) =
-    !javascript.exists || coffee.lastModified > javascript.lastModified
-
-  private def compile(sources: File, target: File, compiler: Compiler, out: Logger)(coffee: File) =
+  private def compile(compiler: Compiler, out: Logger)(pair: (File, File)) =
     try {
+      val (coffee, js) = pair
       out.debug("Compiling %s" format coffee)
-      val js = javascript(sources, coffee, target)
       IO.write(
         js,
         compiler.compile(io.Source.fromFile(coffee).mkString)
@@ -45,18 +41,22 @@ object CoffeeScript extends Plugin {
       )
     }
 
+  private def compiled(under: File) = (under ** "*.js").get
+
   private def compileChanged(sources: File, target: File, compiler: Compiler, out: Logger) =
-    (for (coffee <- (sources ** "*.coffee").get
-      if (outdated(coffee, javascript(sources, coffee, target)))) yield {
-        coffee
+    (for (coffee <- (sources ** "*.coffee").get;
+          js <- javascript(sources, coffee, target)
+      if (coffee newerThan js)) yield {
+        (coffee, js)
       }) match {
         case Nil =>
           out.info("No CoffeeScripts to compile")
-          (target ** "*.js").get
+          compiled(target)
         case xs =>
           out.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
-          xs map compile(sources, target, compiler, out)
-          (target ** "*.js").get
+          xs map compile(compiler, out)
+          out.debug("Compiled %s CoffeeScripts" format xs.size)
+          compiled(target)
       }
 
   private def coffeeCleanTask =
