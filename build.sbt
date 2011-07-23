@@ -6,7 +6,7 @@ organization := "me.lessis"
 
 posterousNotesVersion := "0.1.2"
 
-version <<= (posterousNotesVersion, sbtVersion) ("%s-%s-SNAPSHOT" format(_,_))
+version <<= (posterousNotesVersion, sbtVersion) ("%s-%s" format(_,_))
 
 libraryDependencies ++= Seq(
    "org.jcoffeescript" % "jcoffeescript" % "1.1" from "http://cloud.github.com/downloads/yeungda/jcoffeescript/jcoffeescript-1.1.jar"
