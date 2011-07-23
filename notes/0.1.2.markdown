@@ -8,9 +8,9 @@
 
 All keys are defined under the `coffee` namespace. The primary `coffee` task is available in the global scope.
 
-* `coffee:coffee-target` now defaults to path `target/scala-2.8.1.final/resource_managed/main/js`
+* `coffee:coffee-target` now defaults to path `target/{scalaVersion}/resource_managed/main/js`
 
-To go back the previous mapping use
+To go back the previous mapping, use
 
     seq(coffeescript.CoffeeScript.coffeeSettings: _*)
     targetDirectory in Coffee <<= (resourceManaged in Compile) { _ / "www" / "js" }
