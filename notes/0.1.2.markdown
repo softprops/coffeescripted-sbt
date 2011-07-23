@@ -1,4 +1,4 @@
-* When no files need updating, return add the generated files to the cp [n8han](http://github.com/n8han)
+* `coffee:compile` always returns generated files to the cp [n8han](http://github.com/n8han)
 
 * new wave sbt versioning. sbt version will now be appended to the library version
 
@@ -10,20 +10,23 @@ All keys are defined under the `coffee` namespace. The primary `coffee` task is 
 
 * `coffee:coffee-target` now defaults to path `target/scala-2.8.1.final/resource_managed/main/js`
 
+To go back the previous mapping use
+
+    seq(coffeescript.CoffeeScript.coffeeSettings: _*)
+    targetDirectory in Coffee <<= (resourceManaged in Compile) { _ / "www" / "js" }
+
 * use simpler key names based on sbt conventions
 
     coffee-clean  -> coffee:clean
     coffee-source -> coffee:source-directory
     coffee-target -> coffee:target-directory
-          -       -> coffee:sources
-    coffee       -> coffee or coffee:coffee
+    coffee        -> coffee or coffee:coffee
 
+* introduce a `coffee:sources` key that returns all CoffeeScript sources
 
 * no more auto include setting magic, explicitly injected coffee keys. In your `build.sbt` file add the following line
 
     seq(coffeescript.CoffeeScript.coffeeSettings : _*)
-
-* generated javascript are now stored under `{resourceManaged}/js`
 
 * small refactorings
 
