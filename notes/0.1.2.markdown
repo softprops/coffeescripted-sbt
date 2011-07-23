@@ -15,16 +15,16 @@ To go back the previous mapping, use
     seq(coffeescript.CoffeeScript.coffeeSettings: _*)
     targetDirectory in Coffee <<= (resourceManaged in Compile) { _ / "www" / "js" }
 
-* use simpler key names based on sbt conventions
+* uses simpler key names based on sbt conventions
 
     coffee-clean  -> coffee:clean
     coffee-source -> coffee:source-directory
     coffee-target -> coffee:target-directory
     coffee        -> coffee or coffee:coffee
 
-* introduce a `coffee:sources` key that returns all CoffeeScript sources
+* introduced a `coffee:sources` key that returns all CoffeeScript sources
 
-* no more auto include setting magic, explicitly injected coffee keys. In your `build.sbt` file add the following line
+* no more auto-include settings magic. You now have to explicitly append settings. In your `build.sbt` file add the following line
 
     seq(coffeescript.CoffeeScript.coffeeSettings : _*)
 
