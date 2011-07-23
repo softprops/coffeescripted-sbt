@@ -12,23 +12,22 @@ And add the following lines
 
     resolvers += "less is" at "http://repo.lessis.me"
 
-    libraryDependencies += "me.lessis" %% "coffeescripted-sbt" % "0.1.1"
+    libraryDependencies <+= sbtVersion(v => "me.lessis" %% "coffeescripted-sbt" % "0.1.2-%s".format(v))
 
 ## Settings
 
-    coffee-bare # removes function wrapper from generated JavaScript sources
-    coffee-source # directory containing CoffeeScript sources. defaults to src/main/coffeescript
-    coffee-target # target directory for generated JavaScript sources. defaults to src/main/www/js under target/{scala_version}/resource_managed
+    coffee:bare # removes function wrapper from generated JavaScript sources
+    coffee:source-directory # Directory containing CoffeeScript Sources
+    coffee:target-directory # target directory for generated JavaScript sources. defaults to src/main/js under target/{scala_version}/resource_managed
 
 ## Commands
 
-    coffee-clean # cleans the generated JavaScript files under the coffee-target path
     coffee # compiles any stale *.coffee sources
-
-This plugin also piggybacks on [resourceGenerator](https://github.com/harrah/xsbt/blob/0.10/main/Defaults.scala#L126) tasks which will trigger the [coffee] task
+    coffee:clean # cleans the generated JavaScript files under the coffee:target-directory path
+    coffee:sources # returns all CoffeeScript sources
 
 ## Props
 
-This was converted into a plugin from based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.0
+This was converted into a plugin from based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.*
 
 Doug Tangren (softprops) 2011
