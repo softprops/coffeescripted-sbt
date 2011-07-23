@@ -1,4 +1,4 @@
-* `coffee:compile` always returns generated files to the cp [n8han](http://github.com/n8han)
+* `coffee` always returns generated files [n8han](http://github.com/n8han)
 
 * new wave sbt versioning. sbt version will now be appended to the library version
 
