@@ -4,7 +4,7 @@
 
     version <<= sbtVersion("0.1.2-%s" format _)
 
-* uses a proper config.
+* uses a proper config, Coffee.
 
 All keys are defined under the `coffee` namespace. The primary `coffee` task is available in the global scope.
 
@@ -16,12 +16,14 @@ All keys are defined under the `coffee` namespace. The primary `coffee` task is 
     coffee-source -> coffee:source-directory
     coffee-target -> coffee:target-directory
           -       -> coffee:sources
-     coffee       -> coffee or coffee:coffee
+    coffee       -> coffee or coffee:coffee
 
 
-* no more auto include setting magic, explicitly inject coffee keys. In your `build.sbt` file add the following line
+* no more auto include setting magic, explicitly injected coffee keys. In your `build.sbt` file add the following line
 
     seq(coffeescript.CoffeeScript.coffeeSettings : _*)
+
+* generated javascript are now stored under `{resourceManaged}/js`
 
 * small refactorings
 
