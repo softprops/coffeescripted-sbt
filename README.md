@@ -12,10 +12,9 @@ And add the following lines
 
     resolvers += "less is" at "http://repo.lessis.me"
 
-    libraryDependencies <++= sbtVersion(v => Seq(
-       "me.lessis" %% "coffeescripted-sbt" % "0.1.2-%s".format(v),
-       "org.jcoffeescript" % "jcoffeescript" % "1.1" from "http://cloud.github.com/downloads/yeungda/jcoffeescript/jcoffeescript-1.1.jar"
-    ))
+    libraryDependencies <+= sbtVersion(v =>
+      "me.lessis" %% "coffeescripted-sbt" % "0.1.2-%s".format(v)
+    )
 
 ## Settings
 
