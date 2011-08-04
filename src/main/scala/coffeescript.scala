@@ -8,20 +8,18 @@ import Project.Initialize
 
 import java.io.File
 
-import org.jcoffeescript.{JCoffeeScriptCompiler, Option}
-
 object CoffeeScript extends Plugin {
 
   var Coffee = config("coffee") extend(Runtime)
 
-  type Compiler = { def compile(src: String): String }
+  type Compiler = { def compile(src: String): Either[String, String] }
 
   val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
   val clean = TaskKey[Unit]("clean", "Clean compiled coffee sources.")
   val sources = TaskKey[Seq[File]]("sources", "List of coffee source files")
   val sourceDirectory = SettingKey[File]("source-directory", "Directory containing coffee sources.")
   val targetDirectory = SettingKey[File]("target-directory", "Output directory for compiled coffee sources.")
-  val coffeeBare = SettingKey[Boolean]("coffee-bare", "Compile coffee sources without top-level function wrapper.")
+  val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
@@ -30,15 +28,16 @@ object CoffeeScript extends Plugin {
     try {
       val (coffee, js) = pair
       out.debug("Compiling %s" format coffee)
-      IO.write(
-        js,
-        compiler.compile(io.Source.fromFile(coffee).mkString)
-      )
-      out.debug("Wrote to file %s" format js)
-      js
+      compiler.compile(io.Source.fromFile(coffee).mkString).fold({ err =>
+        error(err)
+      }, { compiled =>
+        IO.write(js, compiled)
+        out.debug("Wrote to file %s" format js)
+        js
+      })
     } catch { case e: Exception =>
       throw new RuntimeException(
-        "error occured while compiling %s: %s" format(coffee, e.getMessage), e
+        "error occured while compiling %s: %s" format(pair._1, e.getMessage), e
       )
     }
 
@@ -68,7 +67,7 @@ object CoffeeScript extends Plugin {
     }
 
   private def coffeeSourceGeneratorTask =
-    (streams, sourceDirectory, targetDirectory, coffeeBare) map {
+    (streams, sourceDirectory, targetDirectory, bare) map {
       (out, sourceDir, targetDir, bare) =>
         compileChanged(sourceDir, targetDir, compiler(bare), out.log)
     }
@@ -78,13 +77,13 @@ object CoffeeScript extends Plugin {
       (sourceDir ** "*.coffee").get
     }
 
-  private def compiler(bare: Boolean) =  new JCoffeeScriptCompiler(if(bare) Option.BARE :: Nil else Nil)
+  private def compiler(bare: Boolean) = if(bare) Compiler(true) else Compiler() // new JCoffeeScriptCompiler(if(bare) Option.BARE :: Nil else Nil)
 
   def coffeeSettings: Seq[Setting[_]] = inConfig(Coffee)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
     targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
     sources <<= coffeeSourcesTask,
-    coffeeBare := false,
+    bare := false,
     cleanFiles <+= targetDirectory.identity,
     clean <<= coffeeCleanTask,
     coffee <<= coffeeSourceGeneratorTask,
