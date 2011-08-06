@@ -6,7 +6,7 @@ organization := "me.lessis"
 
 posterousNotesVersion := "0.1.3"
 
-version <<= (posterousNotesVersion, sbtVersion) ("%s-%s-SNAPSHOT" format(_,_))
+version <<= (posterousNotesVersion, sbtVersion) ("%s-%s" format(_,_))
 
 libraryDependencies += "rhino" % "js" % "1.7R2"
 
