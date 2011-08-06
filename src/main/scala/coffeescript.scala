@@ -77,7 +77,7 @@ object CoffeeScript extends Plugin {
       (sourceDir ** "*.coffee").get
     }
 
-  private def compiler(bare: Boolean) = if(bare) Compiler(true) else Compiler() // new JCoffeeScriptCompiler(if(bare) Option.BARE :: Nil else Nil)
+  private def compiler(bare: Boolean) = if(bare) Compiler(true) else Compiler()
 
   def coffeeSettings: Seq[Setting[_]] = inConfig(Coffee)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
