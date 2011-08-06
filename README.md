@@ -13,7 +13,7 @@ And add the following lines
     resolvers += "less is" at "http://repo.lessis.me"
 
     libraryDependencies <+= sbtVersion(v =>
-      "me.lessis" %% "coffeescripted-sbt" % "0.1.2-%s".format(v)
+      "me.lessis" %% "coffeescripted-sbt" % "0.1.3-%s".format(v)
     )
 
 ## Settings
@@ -22,7 +22,7 @@ And add the following lines
     coffee:source-directory # Directory containing CoffeeScript Sources
     coffee:target-directory # target directory for generated JavaScript sources. defaults to src/main/js under target/{scala_version}/resource_managed
 
-## Commands
+## Tasks
 
     coffee # compiles any stale *.coffee sources
     coffee:clean # cleans the generated JavaScript files under the coffee:target-directory path

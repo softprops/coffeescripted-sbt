@@ -1,6 +1,6 @@
-- resolving [gh1][gh1] with an alternative compiler provided by [daggerrz][dag]
+- resolved [gh1][gh1] with an alternative coffeescript compiler provided by [daggerrz][dag]
 
-- changed `coffee-bare` setting to just `bare`
+- renamed `coffee-bare` setting to `bare`
 
 [gh1]: https://github.com/softprops/coffeescripted-sbt/issues/1
 [dag]: https://github.com/daggerrz
