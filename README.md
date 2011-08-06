@@ -16,6 +16,10 @@ And add the following lines
       "me.lessis" %% "coffeescripted-sbt" % "0.1.3-%s".format(v)
     )
 
+And in your `build.sbt` file add the following line
+
+    seq(coffeescript.CoffeeScript.coffeeSettings: _*)
+
 ## Settings
 
     coffee:bare # removes function wrapper from generated JavaScript sources
