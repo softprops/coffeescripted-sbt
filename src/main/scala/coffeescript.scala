@@ -18,7 +18,7 @@ object CoffeeScript extends Plugin {
   val clean = TaskKey[Unit]("clean", "Clean compiled coffee sources.")
   val sources = TaskKey[Seq[File]]("sources", "List of coffee source files")
   val sourceDirectory = SettingKey[File]("source-directory", "Directory containing coffee sources.")
-  val coffeeFilter = SettingKey[FileFilter]("coffee-filter", "Filter for selecting coffee sources from default directories.")
+  val filter = SettingKey[FileFilter]("filter", "Filter for selecting coffee sources from default directories.")
   val targetDirectory = SettingKey[File]("target-directory", "Output directory for compiled coffee sources.")
   val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
 
@@ -74,7 +74,7 @@ object CoffeeScript extends Plugin {
     }
 
   private def coffeeSourcesTask =
-    (sourceDirectory, coffeeFilter, defaultExcludes) map {
+    (sourceDirectory, filter, defaultExcludes) map {
       (sourceDir, filt, excl) =>
          sourceDir.descendentsExcept(filt,excl).get
     }
@@ -83,7 +83,7 @@ object CoffeeScript extends Plugin {
 
   def coffeeSettings: Seq[Setting[_]] = inConfig(Coffee)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
-    coffeeFilter :== "*.coffee",
+    filter :== "*.coffee",
     targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
     sources <<= coffeeSourcesTask,
     bare := false,

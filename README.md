@@ -23,7 +23,8 @@ And in your `build.sbt` file add the following line
 ## Settings
 
     coffee:bare # removes function wrapper from generated JavaScript sources
-    coffee:source-directory # Directory containing CoffeeScript Sources
+    coffee:source-directory # Directory containing CoffeeScript sources
+    coffee:filter # FileFilter used for including CoffeeScript sources
     coffee:target-directory # target directory for generated JavaScript sources. defaults to src/main/js under target/{scala_version}/resource_managed
 
 ## Tasks

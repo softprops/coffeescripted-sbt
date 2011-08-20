@@ -1,2 +1,2 @@
-- Do filtering of sources more idiomatically using a `coffee-filter` `FileFilter` setting
+- Do filtering of sources more idiomatically using a `coffee:filter` `FileFilter` setting
 - Add CoffeeScript sources to sbt's `watchSources` for continuous triggered compilation support (~ coffee)
