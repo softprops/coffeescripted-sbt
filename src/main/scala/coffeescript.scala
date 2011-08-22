@@ -10,7 +10,7 @@ import java.io.File
 
 object CoffeeScript extends Plugin {
 
-  var Coffee = config("coffee") extend(Runtime)
+  val Coffee = config("coffee") extend(Runtime)
 
   type Compiler = { def compile(src: String): Either[String, String] }
 
