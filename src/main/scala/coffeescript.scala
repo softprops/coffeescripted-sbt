@@ -6,6 +6,7 @@ import sbt._
 import Keys._
 import Project.Initialize
 
+import java.nio.charset.Charset
 import java.io.File
 
 object CoffeeScript extends Plugin {
@@ -21,15 +22,16 @@ object CoffeeScript extends Plugin {
   val filter = SettingKey[FileFilter]("filter", "Filter for selecting coffee sources from default directories.")
   val targetDirectory = SettingKey[File]("target-directory", "Output directory for compiled coffee sources.")
   val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
+  var charset = SettingKey[Charset]("charset", "Sets the character encoding used in file generation. Defaults to utf-8")
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
 
-  private def compile(compiler: Compiler, out: Logger)(pair: (File, File)) =
+  private def compile(compiler: Compiler, charset: Charset, out: Logger)(pair: (File, File)) =
     try {
       val (coffee, js) = pair
       out.debug("Compiling %s" format coffee)
-      compiler.compile(io.Source.fromFile(coffee).mkString).fold({ err =>
+      compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString).fold({ err =>
         error(err)
       }, { compiled =>
         IO.write(js, compiled)
@@ -44,7 +46,7 @@ object CoffeeScript extends Plugin {
 
   private def compiled(under: File) = (under ** "*.js").get
 
-  private def compileChanged(sources: File, target: File, compiler: Compiler, out: Logger) =
+  private def compileChanged(sources: File, target: File, compiler: Compiler, charset: Charset, out: Logger) =
     (for (coffee <- (sources ** "*.coffee").get;
           js <- javascript(sources, coffee, target)
       if (coffee newerThan js)) yield {
@@ -55,7 +57,7 @@ object CoffeeScript extends Plugin {
           compiled(target)
         case xs =>
           out.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
-          xs map compile(compiler, out)
+          xs map compile(compiler, charset, out)
           out.debug("Compiled %s CoffeeScripts" format xs.size)
           compiled(target)
       }
@@ -68,15 +70,15 @@ object CoffeeScript extends Plugin {
     }
 
   private def coffeeSourceGeneratorTask =
-    (streams, sourceDirectory, targetDirectory, bare) map {
-      (out, sourceDir, targetDir, bare) =>
-        compileChanged(sourceDir, targetDir, compiler(bare), out.log)
+    (streams, sourceDirectory, targetDirectory, charset, bare) map {
+      (out, sourceDir, targetDir, charset, bare) =>
+        compileChanged(sourceDir, targetDir, compiler(bare), charset, out.log)
     }
 
   private def coffeeSourcesTask =
     (sourceDirectory, filter, defaultExcludes) map {
       (sourceDir, filt, excl) =>
-         sourceDir.descendentsExcept(filt,excl).get
+         sourceDir.descendentsExcept(filt, excl).get
     }
 
   private def compiler(bare: Boolean) = if(bare) Compiler(true) else Compiler()
@@ -87,6 +89,7 @@ object CoffeeScript extends Plugin {
     targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
     sources <<= coffeeSourcesTask,
     bare := false,
+    charset := Charset.forName("utf-8"),
     cleanFiles <+= targetDirectory.identity,
     clean <<= coffeeCleanTask,
     coffee <<= coffeeSourceGeneratorTask,

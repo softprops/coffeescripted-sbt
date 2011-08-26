@@ -2,12 +2,18 @@ package coffeescript
 
 import org.mozilla.javascript.{Context, Function, JavaScriptException, NativeObject}
 import java.io.InputStreamReader
+import java.nio.charset.Charset
+
+object Compiler {
+  val utf8 = Charset.forName("utf-8")
+}
 
 /**
  * A Scala / Rhino Coffeescript compiler.
  * @author daggerrz
  */
 case class Compiler(bare: Boolean = false) {
+  import Compiler._
 
   /**
    * Compiles a string of Coffeescript code to Javascript.
@@ -18,7 +24,7 @@ case class Compiler(bare: Boolean = false) {
   def compile(code: String): Either[String, String] = withContext { ctx =>
     val scope = ctx.initStandardObjects()
     ctx.evaluateReader(scope,
-      new InputStreamReader(getClass().getResourceAsStream("/coffee-script.js"), "UTF-8"),
+      new InputStreamReader(getClass().getResourceAsStream("/coffee-script.js"), utf8),
      "coffee-script.js", 1, null
     )
 
