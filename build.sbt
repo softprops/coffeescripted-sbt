@@ -4,7 +4,7 @@ name := "coffeescripted-sbt"
 
 organization := "me.lessis"
 
-posterousNotesVersion := "0.1.4"
+posterousNotesVersion := "0.1.5"
 
 version <<= (posterousNotesVersion, sbtVersion) ("%s-%s" format(_,_))
 

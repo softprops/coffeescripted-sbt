@@ -1,0 +1,5 @@
+Fix for [#4][i4], broken character encoding support. Added new `coffee:charset` setting which sets the character encoding scheme used to generate files. The default is `utf-8`. If you should find the need to use another, you can always override it with
+
+    charset in Coffee := java.nio.charset.Charset.forName("ISO-8859-9")
+
+[i4]: https://github.com/softprops/coffeescripted-sbt/issues/4
