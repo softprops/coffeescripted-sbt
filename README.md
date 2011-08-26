@@ -23,6 +23,7 @@ And in your `build.sbt` file add the following line
 ## Settings
 
     coffee:bare # removes function wrapper from generated JavaScript sources
+    coffee:charset # sets the character encoding used to generate files
     coffee:source-directory # Directory containing CoffeeScript sources
     coffee:filter # FileFilter used for including CoffeeScript sources
     coffee:target-directory # target directory for generated JavaScript sources. defaults to src/main/js under target/{scala_version}/resource_managed
