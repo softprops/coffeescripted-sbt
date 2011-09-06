@@ -14,7 +14,7 @@ And add the following lines
 
     resolvers += "less is" at "http://repo.lessis.me"
 
-    addSbtPlugin("coffeescript" % "coffeescripted-sbt" % "0.1.5")
+    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.1.5")
 
 For sbt 0.10.*
 
