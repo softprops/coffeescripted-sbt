@@ -19,10 +19,13 @@ object CoffeeScript extends Plugin {
   val clean = TaskKey[Unit]("clean", "Clean compiled coffee sources.")
   val sources = TaskKey[Seq[File]]("sources", "List of coffee source files")
   val sourceDirectory = SettingKey[File]("source-directory", "Directory containing coffee sources.")
+  // think about changing to includeFilter in the next rel (maybe, I like the way coffee:filter sounds :))
   val filter = SettingKey[FileFilter]("filter", "Filter for selecting coffee sources from default directories.")
+  val excludeFilter = SettingKey[FileFilter]("exclude-filter", "Filter for excluding files from default directories.")
   val targetDirectory = SettingKey[File]("target-directory", "Output directory for compiled coffee sources.")
   val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
-  var charset = SettingKey[Charset]("charset", "Sets the character encoding used in file generation. Defaults to utf-8")
+  val charset = SettingKey[Charset]("charset", "Sets the character encoding used in file generation. Defaults to utf-8")
+
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
@@ -75,8 +78,9 @@ object CoffeeScript extends Plugin {
         compileChanged(sourceDir, targetDir, compiler(bare), charset, out.log)
     }
 
+  // move defaultExcludes to excludeFilter in unmanagedSources later
   private def coffeeSourcesTask =
-    (sourceDirectory, filter, defaultExcludes) map {
+    (sourceDirectory, filter, excludeFilter) map {
       (sourceDir, filt, excl) =>
          sourceDir.descendentsExcept(filt, excl).get
     }
@@ -85,7 +89,9 @@ object CoffeeScript extends Plugin {
 
   def coffeeSettings: Seq[Setting[_]] = inConfig(Coffee)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
-    filter :== "*.coffee",
+    filter := "*.coffee",
+    // change to (excludeFilter in Global) when dropping support of sbt 0.10.*
+    excludeFilter := (".*"  - ".") || HiddenFileFilter,
     targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
     sources <<= coffeeSourcesTask,
     bare := false,
