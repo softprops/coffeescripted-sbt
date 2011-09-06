@@ -6,6 +6,18 @@ In the tradition of [CoffeeScript Plugins](https://github.com/rubbish/coffee-scr
 
 ## Install
 
+For sbt 0.11
+
+In your project, define a file for plugin library dependencies, `project/plugins.sbt`
+
+And add the following lines
+
+    resolvers += "less is" at "http://repo.lessis.me"
+
+    addSbtPlugin("coffeescript" % "coffeescripted-sbt" % "0.1.5")
+
+For sbt 0.10.*
+
 In you project, define a file for plugin library dependencies `project/plugins/build.sbt`
 
 And add the following lines
