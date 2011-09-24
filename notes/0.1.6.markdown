@@ -10,14 +10,14 @@ Away went the Coffee config and in comes the coffee scoped tasks
 Below is a diagram to help you transition over to the new style of accessing keys
 
     coffee                 -> coffee
-    coffee:clean           -> some-config:clean(for coffee) or (clean in (SomeConfig, coffee))
-    coffee:sources         -> unmanaged-sources(for coffee) or (unmanagedSources in (SomeConfig,coffee))
+    coffee:clean           -> some-config:clean(for coffee)            or (clean in (SomeConfig, coffee))
+    coffee:sources         -> unmanaged-sources(for coffee)            or (unmanagedSources in (SomeConfig,coffee))
     coffee:sourceDirectory -> some-config:source-directory(for coffee) or (sourceDirectory in (SomeConfig, coffee))
-    coffee:filter          -> filter(for coffee) or (filter in (SomeConfig, coffee))
-    coffee:excludeFilter   -> exclude-filter(for coffee) or (excludeFilter in (SomeConfig, coffee))
+    coffee:filter          -> filter(for coffee)                       or (filter in (SomeConfig, coffee))
+    coffee:excludeFilter   -> exclude-filter(for coffee)               or (excludeFilter in (SomeConfig, coffee))
     coffee:targetDirectory -> some-config:resource-managed(for coffee) or (resourceManaged in (SomeConfig, coffee))
-    coffee:bare            -> bare(for coffee) or (bare in (SomeConfig, coffee))
-    coffee:charset         -> charset(for coffee) or (charset in (SomeConfig, coffee))
+    coffee:bare            -> bare(for coffee)                         or (bare in (SomeConfig, coffee))
+    coffee:charset         -> charset(for coffee)                      or (charset in (SomeConfig, coffee))
 
 This new style should promote better reuse of built-in keys and more flexibility in terms of
 `Config`ureabilty.
