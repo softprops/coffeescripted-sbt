@@ -34,6 +34,6 @@ To include coffeescripted's setting with your build in a target config, use
 
 To override a coffeescripted key, access them through the `CoffeeKeys` module
 
-    (CoffeeKeys.bare in CoffeeKeys.coffee) := true
+    (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
 
 [bp]: https://github.com/harrah/xsbt/wiki/Plugins-Best-Practices
