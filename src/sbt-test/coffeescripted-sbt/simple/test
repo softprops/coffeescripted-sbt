@@ -1,3 +1,4 @@
 # should generate javascript
 > coffee
 $ exists target/scala-2.8.1.final/resource_managed/main/js/foo.js
+> contents target/scala-2.8.1.final/resource_managed/main/js/foo.js fixtures/foo.js
