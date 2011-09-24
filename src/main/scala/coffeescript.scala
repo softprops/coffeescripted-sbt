@@ -1,31 +1,26 @@
 package coffeescript
 
-import scala.collection.JavaConversions._
-
 import sbt._
-import Keys._
-import Project.Initialize
-
+import sbt.Keys._
+import sbt.Project.Initialize
+import scala.collection.JavaConversions._
 import java.nio.charset.Charset
 import java.io.File
 
-object CoffeeScript extends Plugin {
+object Plugin extends sbt.Plugin {
+  import CoffeeKeys._
 
-  val Coffee = config("coffee") extend(Runtime)
+  object CoffeeKeys {
+    val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
+    val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
+    // possible candidate for community key repo
+    val charset = SettingKey[Charset]("charset", "Sets the character encoding used in file IO. Defaults to utf-8")
+    // think about changing to filter in the next rel (maybe, I like the way coffee:filter sounds :))
+    val filter = SettingKey[FileFilter]("filter", "Filter for selecting coffee sources from default directories.")
+    val excludeFilter = SettingKey[FileFilter]("exclude-filter", "Filter for excluding files from default directories.")
+  }
 
   type Compiler = { def compile(src: String): Either[String, String] }
-
-  val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
-  val clean = TaskKey[Unit]("clean", "Clean compiled coffee sources.")
-  val sources = TaskKey[Seq[File]]("sources", "List of coffee source files")
-  val sourceDirectory = SettingKey[File]("source-directory", "Directory containing coffee sources.")
-  // think about changing to includeFilter in the next rel (maybe, I like the way coffee:filter sounds :))
-  val filter = SettingKey[FileFilter]("filter", "Filter for selecting coffee sources from default directories.")
-  val excludeFilter = SettingKey[FileFilter]("exclude-filter", "Filter for excluding files from default directories.")
-  val targetDirectory = SettingKey[File]("target-directory", "Output directory for compiled coffee sources.")
-  val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
-  val charset = SettingKey[Charset]("charset", "Sets the character encoding used in file generation. Defaults to utf-8")
-
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
@@ -66,43 +61,49 @@ object CoffeeScript extends Plugin {
       }
 
   private def coffeeCleanTask =
-    (streams, targetDirectory) map {
+    (streams, resourceManaged in coffee) map {
       (out, target) =>
         out.log.info("Cleaning generated JavaScript under " + target)
         IO.delete(target)
     }
 
   private def coffeeSourceGeneratorTask =
-    (streams, sourceDirectory, targetDirectory, charset, bare) map {
+    (streams, sourceDirectory in coffee, resourceManaged in coffee, charset in coffee, bare in coffee) map {
       (out, sourceDir, targetDir, charset, bare) =>
         compileChanged(sourceDir, targetDir, compiler(bare), charset, out.log)
     }
 
   // move defaultExcludes to excludeFilter in unmanagedSources later
   private def coffeeSourcesTask =
-    (sourceDirectory, filter, excludeFilter) map {
+    (sourceDirectory in coffee, filter in coffee, excludeFilter in coffee) map {
       (sourceDir, filt, excl) =>
          sourceDir.descendentsExcept(filt, excl).get
     }
 
   private def compiler(bare: Boolean) = if(bare) Compiler(true) else Compiler()
 
-  def coffeeSettings: Seq[Setting[_]] = inConfig(Coffee)(Seq(
-    sourceDirectory <<= (sourceDirectory in Compile) { _ / "coffee" },
-    filter := "*.coffee",
-    // change to (excludeFilter in Global) when dropping support of sbt 0.10.*
-    excludeFilter := (".*"  - ".") || HiddenFileFilter,
-    targetDirectory <<= (resourceManaged in Compile) { _ / "js" },
-    sources <<= coffeeSourcesTask,
-    bare := false,
-    charset := Charset.forName("utf-8"),
-    cleanFiles <+= targetDirectory.identity,
-    clean <<= coffeeCleanTask,
-    coffee <<= coffeeSourceGeneratorTask,
-    resourceGenerators in Compile <+= coffee.identity
-  )) ++ Seq(
-    coffee <<= (coffee in Coffee).identity,
-    watchSources <++= (sources in Coffee).identity
-  )
+  def coffeeSettingsIn(c: Configuration): Seq[Setting[_]] =
+    inConfig(c)(coffeeSettings0 ++ Seq(
+      resourceGenerators in c <+= (unmanagedSources in coffee).identity,
+      sourceDirectory in coffee <<= (sourceDirectory in c) { _ / "coffee" },
+      resourceManaged in coffee <<= (resourceManaged in c) { _ / "js" },
+      resourceGenerators in c <+= coffee.identity
+    )) ++ Seq(
+      cleanFiles <+= (resourceManaged in coffee in c).identity,
+      watchSources <++= (unmanagedSources in coffee in c).identity
+    )
 
+  def coffeeSettings: Seq[Setting[_]] =
+    coffeeSettingsIn(Compile) ++ coffeeSettingsIn(Test)
+
+  def coffeeSettings0: Seq[Setting[_]] = Seq(
+    bare in coffee := false,
+    charset in coffee := Charset.forName("utf-8"),
+    filter in coffee := "*.coffee",
+    // change to (excludeFilter in Global) when dropping support of sbt 0.10.*
+    excludeFilter in coffee := (".*"  - ".") || HiddenFileFilter,
+    unmanagedSources in coffee <<= coffeeSourcesTask,
+    clean in coffee <<= coffeeCleanTask,
+    coffee <<= coffeeSourceGeneratorTask
+  )
 }

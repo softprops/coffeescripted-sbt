@@ -1,1 +1,1 @@
-seq(coffeescript.CoffeeScript.coffeeSettings:_*)
+seq(coffeeSettings:_*)

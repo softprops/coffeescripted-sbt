@@ -1,3 +1,3 @@
-seq(coffeescript.CoffeeScript.coffeeSettings:_*)
+seq(coffeeSettings:_*)
 
-(coffeescript.CoffeeScript.bare in Coffee) := true
+(CoffeeKeys.bare in CoffeeKeys.coffee) := true

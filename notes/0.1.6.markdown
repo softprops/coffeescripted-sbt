@@ -1,0 +1,39 @@
+# Sbt plug-in [Best Practices][bp] compliant.
+
+After much trial and error a new set of best practices were layed out including those that affect
+how you access coffeescripted keys.
+
+- no more coffee:<tab>
+
+Away went the Coffee config and in comes the coffee scoped tasks
+
+Below is a diagram to help you transition over to the new style of accessing keys
+
+    coffee                 -> coffee
+    coffee:clean           -> clean(for coffee) or (clean in coffee)
+    coffee:sources         -> sources(for coffee) or (sources in coffee)
+    coffee:sourceDirectory -> source-directory(for coffee) or (sourceDirectory in coffee)
+    coffee:filter          -> filter
+    coffee:excludeFilter   -> excludeFilter(for coffee) or (excludeFilter in coffee)
+    coffee:targetDirectory -> resourceManaged(for coffee) or (resourceManaged in coffee)
+    coffee:bare            -> bare(for coffee) or (bare in coffee)
+    coffee:charset         -> charset(for coffee) or (charset in coffee)
+
+This new style should promote better reuse of built-in keys and more flexibility in terms of
+`Config`ureabilty.
+
+To include coffeescripted's settings within your build's default configs, use
+
+    seq(coffeeSettings:_*)
+
+To include coffeescripted's setting with your build in a target config, use
+
+    seq(coffeeSettingsIn(TargetConfig):_*)
+
+- Keys have their own module, `CoffeeKeys`.
+
+To override a coffeescripted key, access them through the `CoffeeKeys` moule
+
+    (CoffeeKeys.bar in CoffeeKeys.coffee) := true
+
+[bp]: https://github.com/harrah/xsbt/wiki/Plugins-Best-Practices
