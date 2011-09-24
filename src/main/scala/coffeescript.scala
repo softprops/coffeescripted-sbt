@@ -67,7 +67,7 @@ object Plugin extends sbt.Plugin {
         IO.delete(target)
     }
 
-  private def coffeeSourceGeneratorTask =
+  private def coffeeCompilerTask =
     (streams, sourceDirectory in coffee, resourceManaged in coffee, charset in coffee, bare in coffee) map {
       (out, sourceDir, targetDir, charset, bare) =>
         compileChanged(sourceDir, targetDir, compiler(bare), charset, out.log)
@@ -84,7 +84,6 @@ object Plugin extends sbt.Plugin {
 
   def coffeeSettingsIn(c: Configuration): Seq[Setting[_]] =
     inConfig(c)(coffeeSettings0 ++ Seq(
-      resourceGenerators in c <+= (unmanagedSources in coffee).identity,
       sourceDirectory in coffee <<= (sourceDirectory in c) { _ / "coffee" },
       resourceManaged in coffee <<= (resourceManaged in c) { _ / "js" },
       resourceGenerators in c <+= coffee.identity
@@ -104,6 +103,6 @@ object Plugin extends sbt.Plugin {
     excludeFilter in coffee := (".*"  - ".") || HiddenFileFilter,
     unmanagedSources in coffee <<= coffeeSourcesTask,
     clean in coffee <<= coffeeCleanTask,
-    coffee <<= coffeeSourceGeneratorTask
+    coffee <<= coffeeCompilerTask
   )
 }
