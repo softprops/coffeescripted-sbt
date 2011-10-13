@@ -44,19 +44,22 @@ object Plugin extends sbt.Plugin {
 
   private def compiled(under: File) = (under ** "*.js").get
 
-  private def compileChanged(sources: File, target: File, compiler: Compiler, charset: Charset, out: Logger) =
-    (for (coffee <- (sources ** "*.coffee").get;
+  private def compileChanged(sources: File, target: File, incl: FileFilter, excl: FileFilter,
+                             compiler: Compiler, charset: Charset, log: Logger) =
+    (for (coffee <- sources.descendentsExcept(incl, excl).get;
           js <- javascript(sources, coffee, target)
       if (coffee newerThan js)) yield {
+        log.info(" c %s" format coffee)
+        log.info("j %s" format js)
         (coffee, js)
       }) match {
         case Nil =>
-          out.info("No CoffeeScripts to compile")
+          log.info("No CoffeeScripts to compile")
           compiled(target)
         case xs =>
-          out.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
-          xs map compile(compiler, charset, out)
-          out.debug("Compiled %s CoffeeScripts" format xs.size)
+          log.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
+          xs map compile(compiler, charset, log)
+          log.debug("Compiled %s CoffeeScripts" format xs.size)
           compiled(target)
       }
 
@@ -68,9 +71,10 @@ object Plugin extends sbt.Plugin {
     }
 
   private def coffeeCompilerTask =
-    (streams, sourceDirectory in coffee, resourceManaged in coffee, charset in coffee, bare in coffee) map {
-      (out, sourceDir, targetDir, charset, bare) =>
-        compileChanged(sourceDir, targetDir, compiler(bare), charset, out.log)
+    (streams, sourceDirectory in coffee, resourceManaged in coffee,
+     filter in coffee, excludeFilter in coffee, charset in coffee, bare in coffee) map {
+      (out, sourceDir, targetDir, incl, excl, charset, bare) =>
+        compileChanged(sourceDir, targetDir, incl, excl, compiler(bare), charset, out.log)
     }
 
   // move defaultExcludes to excludeFilter in unmanagedSources later
