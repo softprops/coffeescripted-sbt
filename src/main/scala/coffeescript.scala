@@ -25,15 +25,15 @@ object Plugin extends sbt.Plugin {
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
 
-  private def compile(compiler: Compiler, charset: Charset, out: Logger)(pair: (File, File)) =
+  private def compile(compiler: Compiler, charset: Charset, log: Logger)(pair: (File, File)) =
     try {
       val (coffee, js) = pair
-      out.debug("Compiling %s" format coffee)
+      log.debug("Compiling %s" format coffee)
       compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString).fold({ err =>
-        error(err)
+        sys.error(err)
       }, { compiled =>
         IO.write(js, compiled)
-        out.debug("Wrote to file %s" format js)
+        log.debug("Wrote to file %s" format js)
         js
       })
     } catch { case e: Exception =>
@@ -90,10 +90,10 @@ object Plugin extends sbt.Plugin {
     inConfig(c)(coffeeSettings0 ++ Seq(
       sourceDirectory in coffee <<= (sourceDirectory in c) { _ / "coffee" },
       resourceManaged in coffee <<= (resourceManaged in c) { _ / "js" },
-      resourceGenerators in c <+= coffee.identity
+      resourceGenerators in c <+= coffee
     )) ++ Seq(
-      cleanFiles <+= (resourceManaged in coffee in c).identity,
-      watchSources <++= (unmanagedSources in coffee in c).identity
+      cleanFiles <+= (resourceManaged in coffee in c),
+      watchSources <++= (unmanagedSources in coffee in c)
     )
 
   def coffeeSettings: Seq[Setting[_]] =

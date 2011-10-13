@@ -4,11 +4,6 @@ name := "coffeescripted-sbt"
 
 organization := "me.lessis"
 
-scalacOptions += "-deprecation"
-
-//wait for posterous 2.9 update
-//version in Posterous := "0.1.5"
-
 version <<= (sbtVersion) { (sv) =>
   val v = "0.2.0"
   if(sv.startsWith("0.10")) "%s-%s-SNAPSHOT" format(v,sv)
