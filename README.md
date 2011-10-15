@@ -48,6 +48,6 @@ And in your `build.sbt` file add the following line
 
 ## Props
 
-This was converted into a plugin from based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.*
+This was converted into a plugin from based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.11.*
 
 Doug Tangren (softprops) 2011
