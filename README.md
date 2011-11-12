@@ -34,9 +34,9 @@ In your `build.sbt` file add the following line
 
 By default, generate javascript resources are wrapped in annonymous module.
 
-   (function() {
-     // your code here
-   }).call(this);
+    (function() {
+      // your code here
+    }).call(this);
 
 CoffeeScripted enables `bare`-style javascript as well. You can controll this with the `bare` setting.
 To enable it, append the following to your build definition.
@@ -47,7 +47,7 @@ By default, CoffeeScript sources are resolved under `src/main/coffee` and compil
 
 You can override this behavior by appending the following to your build definition.
 
-(resourceManaged in (Compile, CoffeeKeys.coffee)) <<= (crossTarget in Compile)(_ / "your_preference" / "js")
+    (resourceManaged in (Compile, CoffeeKeys.coffee)) <<= (crossTarget in Compile)(_ / "your_preference" / "js")
 
 ## Props
 
