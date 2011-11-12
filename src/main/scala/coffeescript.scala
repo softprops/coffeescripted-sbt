@@ -25,7 +25,7 @@ object Plugin extends sbt.Plugin {
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
 
-  private def compile(compiler: Compiler, charset: Charset, log: Logger)(pair: (File, File)) =
+  private def compileSources(compiler: Compiler, charset: Charset, log: Logger)(pair: (File, File)) =
     try {
       val (coffee, js) = pair
       log.debug("Compiling %s" format coffee)
@@ -58,7 +58,7 @@ object Plugin extends sbt.Plugin {
           compiled(target)
         case xs =>
           log.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
-          xs map compile(compiler, charset, log)
+          xs map compileSources(compiler, charset, log)
           log.debug("Compiled %s CoffeeScripts" format xs.size)
           compiled(target)
       }
@@ -90,10 +90,13 @@ object Plugin extends sbt.Plugin {
     inConfig(c)(coffeeSettings0 ++ Seq(
       sourceDirectory in coffee <<= (sourceDirectory in c) { _ / "coffee" },
       resourceManaged in coffee <<= (resourceManaged in c) { _ / "js" },
-      resourceGenerators in c <+= coffee
+      cleanFiles in coffee <<= (resourceManaged in coffee)(_ :: Nil),
+      watchSources in coffee <<= (unmanagedSources in coffee)
     )) ++ Seq(
       cleanFiles <+= (resourceManaged in coffee in c),
-      watchSources <++= (unmanagedSources in coffee in c)
+      watchSources <++= (unmanagedSources in coffee in c),
+      resourceGenerators in c <+= coffee in c,
+      compile in c <<= (compile in c).dependsOn(coffee in c)
     )
 
   def coffeeSettings: Seq[Setting[_]] =
@@ -104,7 +107,7 @@ object Plugin extends sbt.Plugin {
     charset in coffee := Charset.forName("utf-8"),
     filter in coffee := "*.coffee",
     // change to (excludeFilter in Global) when dropping support of sbt 0.10.*
-    excludeFilter in coffee := (".*"  - ".") || HiddenFileFilter,
+    excludeFilter in coffee := (".*" - ".") || HiddenFileFilter,
     unmanagedSources in coffee <<= coffeeSourcesTask,
     clean in coffee <<= coffeeCleanTask,
     coffee <<= coffeeCompilerTask
