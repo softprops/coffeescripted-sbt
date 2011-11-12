@@ -49,12 +49,10 @@ object Plugin extends sbt.Plugin {
     (for (coffee <- sources.descendentsExcept(incl, excl).get;
           js <- javascript(sources, coffee, target)
       if (coffee newerThan js)) yield {
-        log.info(" c %s" format coffee)
-        log.info("j %s" format js)
         (coffee, js)
       }) match {
         case Nil =>
-          log.info("No CoffeeScripts to compile")
+          log.debug("No CoffeeScripts to compile")
           compiled(target)
         case xs =>
           log.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
