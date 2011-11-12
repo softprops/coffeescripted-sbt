@@ -6,7 +6,7 @@ In the tradition of [CoffeeScript Plugins](https://github.com/rubbish/coffee-scr
 
 ## Install
 
-For sbt 0.11
+For sbt 0.11.+
 
 In your project, define a file for plugin library dependencies, `project/plugins.sbt`
 
@@ -52,6 +52,7 @@ You can override this behavior by appending the following to your build definiti
 
 ## Props
 
-This was converted into a plugin based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.*
+
+This was converted into a plugin based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.11.*
 
 Doug Tangren (softprops) 2011
