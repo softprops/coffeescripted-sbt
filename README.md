@@ -14,40 +14,44 @@ And add the following lines
 
     resolvers += "less is" at "http://repo.lessis.me"
 
-    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.1.5")
+    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.0")
 
-For sbt 0.10.*
+In your `build.sbt` file add the following line
 
-In you project, define a file for plugin library dependencies `project/plugins/build.sbt`
-
-And add the following lines
-
-    resolvers += "less is" at "http://repo.lessis.me"
-
-    libraryDependencies <+= sbtVersion(v =>
-      "me.lessis" %% "coffeescripted-sbt" % "0.1.5-%s".format(v)
-    )
-
-And in your `build.sbt` file add the following line
-
-    seq(coffeescript.CoffeeScript.coffeeSettings: _*)
+    seq(coffeeSettings: _*)
 
 ## Settings
+    coffee # compiles CoffeeScript source files
+    bare(for coffee) # removes function wrapper from generated JavaScript sources
+    charset(for coffee) # sets the character encoding used to generate files
+    exclude-filter(for coffee) # filter for files ignored by plugin
+    unmanaged-sources(for coffee) # lists resolved CoffeeScript sources
+    clean(for coffee) # deletes compiled javascript resources    
+    config:source-directory(for coffee) # directory containging CoffeeScript sources
+    config:resource-managed(for coffee) # where compiled javascript will be copied to
 
-    coffee:bare # removes function wrapper from generated JavaScript sources
-    coffee:charset # sets the character encoding used to generate files
-    coffee:source-directory # Directory containing CoffeeScript sources
-    coffee:filter # FileFilter used for including CoffeeScript sources
-    coffee:target-directory # target directory for generated JavaScript sources. defaults to src/main/js under target/{scala_version}/resource_managed
+## Customization
 
-## Tasks
+By default, generate javascript resources are wrapped in annonymous module.
 
-    coffee # compiles any stale *.coffee sources
-    coffee:clean # cleans the generated JavaScript files under the coffee:target-directory path
-    coffee:sources # returns all CoffeeScript sources
+   (function() {
+     // your code here
+   }).call(this);
+
+CoffeeScripted enables `bare`-style javascript as well. You can controll this with the `bare` setting.
+To enable it, append the following to your build definition.
+
+    (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
+
+By default, CoffeeScript sources are resolved under `src/main/coffee` and compiled javascript will by copied to
+`target/resource_managed/js`
+
+You can override this behavior by appending the following to your build definition.
+
+(resourceManaged in (Compile, CoffeeKeys.coffee)) <<= (crossTarget in Compile)(_ / "your_preference" / "js")
 
 ## Props
 
-This was converted into a plugin from based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.*
+This was converted into a plugin based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.10.*
 
 Doug Tangren (softprops) 2011
