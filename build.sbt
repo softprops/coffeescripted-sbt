@@ -6,8 +6,8 @@ organization := "me.lessis"
 
 version <<= (sbtVersion) { (sv) =>
   val v = "0.2.0"
-  if(sv.startsWith("0.10")) "%s-%s-SNAPSHOT" format(v,sv)
-  else if(sv.startsWith("0.11")) v + "-SNAPSHOT"
+  if(sv.startsWith("0.10")) "%s-%s" format(v,sv)
+  else if(sv.startsWith("0.11")) v
   else error("unsupported version of sbt: %s" format sv)
 }
 
