@@ -1,3 +1,4 @@
+
 # Sbt plug-in [Best Practices][bp] compliant.
 
 - no more coffee:<tab>
@@ -6,6 +7,7 @@ Away went the Coffee config and in comes the coffee scoped tasks
 
 Below is a diagram to help you transition over to the new style of accessing keys
 
+    Before                 After
     coffee                 -> coffee
     coffee:clean           -> some-config:clean(for coffee)            or (clean in (SomeConfig, coffee))
     coffee:sources         -> unmanaged-sources(for coffee)            or (unmanagedSources in (SomeConfig,coffee))
@@ -32,5 +34,15 @@ To include coffeescripted's setting with your build in a target config, use
 To override a coffeescripted key, access them through the `CoffeeKeys` module
 
     (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
+
+- Sbt's `compile` task will depend on `coffee`, when mixing `coffeeSettings`
+
+This enables CoffeeScript sources to both trigger be triggered by the common usage of `~compile`.
+
+- Support for sbt 0.11.1
+
+A little late to the party, but hey, we're here now.
+
+See the project's [README](https://github.com/softprops/coffeescripted-sbt#readme) for more notes.
 
 [bp]: https://github.com/harrah/xsbt/wiki/Plugins-Best-Practices
