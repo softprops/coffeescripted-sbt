@@ -1,8 +1,5 @@
 # Sbt plug-in [Best Practices][bp] compliant.
 
-After much trial and error a new set of best practices were layed out including those that affect
-how you access coffeescripted keys.
-
 - no more coffee:<tab>
 
 Away went the Coffee config and in comes the coffee scoped tasks
