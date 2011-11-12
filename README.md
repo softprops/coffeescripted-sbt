@@ -43,8 +43,7 @@ To enable it, append the following to your build definition.
 
     (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
 
-By default, CoffeeScript sources are resolved under `src/main/coffee` and compiled javascript will by copied to
-`target/resource_managed/js`
+By default, CoffeeScript sources are resolved under `src/main/coffee` and compiled javascript will by copied to `target/scala-2.9.1/resource_managed/main/js`
 
 You can override this behavior by appending the following to your build definition.
 
