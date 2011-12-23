@@ -51,7 +51,8 @@ You can override this behavior by appending the following to your build definiti
 
 ## Props
 
-
 This was converted into a plugin based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.11.*
+
+This plugin currently uses the v1.1.1 version of the coffeescript js compiler.
 
 Doug Tangren (softprops) 2011
