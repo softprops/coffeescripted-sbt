@@ -1,0 +1,2 @@
+- upgraded from v1.1.1 to Coffeescript js compiler v1.2.0 [changelog](http://jashkenas.github.com/coffee-script/#changelog)
+
