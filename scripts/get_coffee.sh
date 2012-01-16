@@ -7,4 +7,4 @@ if [[ -f src/main/resources/coffee-script.js && ! -f src/main/resources/coffee-s
   mv src/main/resources/coffee-script.js src/main/resources/coffee-script.js.released
 fi
 
-curl -o src/main/resources/coffee-script.js --progress-bar -O coffeescript.org/extras/coffee-script.js
+curl -o src/main/resources/coffee-script.js --progress-bar -O https://raw.github.com/jashkenas/coffee-script/1.2.0/extras/coffee-script.js
