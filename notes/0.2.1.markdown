@@ -6,8 +6,6 @@
 
 * for future reference, If you happen to plan on using the [1.2.0][cc] CoffeeScript compiler and you just so happen to use a Javascript interpreter that understands, [reserved words][rw] like `static`, follow the fix mentioned here [here][csfix] or [here][csfix2] and save yourself an afternoon.
 
-org.mozilla.javascript.EvaluatorException: missing name after . operator
-
 [rw]: https://developer.mozilla.org/en/JavaScript/Reference/Reserved_Words
 [cscl]: http://jashkenas.github.com/coffee-script/#changelog
 [cc]: https://raw.github.com/jashkenas/coffee-script/1.2.0/extras/coffee-script.js
