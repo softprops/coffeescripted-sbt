@@ -24,8 +24,6 @@ seq(lsSettings:_*)
 
 (LsKeys.tags in LsKeys.lsync) := Seq("sbt", "coffeescript")
 
-(externalResolvers in LsKeys.lsync) := Seq("less is" at "http://repo.lessis.me")
-
 description := "Sbt plugin for compiling CoffeeScript sources"
 
 licenses <<= (version)(v => Seq(
