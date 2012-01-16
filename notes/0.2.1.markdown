@@ -1,7 +1,8 @@
 - upgraded from v1.1.1 to Coffeescript js compiler v1.2.0* [changelog][cscl]
 
+- published for sbt 0.11.2, [ask nicely][ask], if you need support older versions of sbt
 
-* for future reference, If you happen to plan on using the [1.2.0][cc] CoffeeScript compiler and you just so happen to use a compiler that understands, [reserved words][rw] like `static`, follow the fix mentioned here [here][csfix] or [here][csfix2]
+* for future reference, If you happen to plan on using the [1.2.0][cc] CoffeeScript compiler and you just so happen to use a compiler that understands, [reserved words][rw] like `static`, follow the fix mentioned here [here][csfix] or [here][csfix2] and save yourself an afternoon.
 
 org.mozilla.javascript.EvaluatorException: missing name after . operator
 
@@ -10,4 +11,5 @@ org.mozilla.javascript.EvaluatorException: missing name after . operator
 [cc]: https://raw.github.com/jashkenas/coffee-script/1.2.0/extras/coffee-script.js
 [csfix]: https://github.com/jashkenas/coffee-script/issues/2046
 [csfix2]: https://github.com/jashkenas/coffee-script/issues/2013
+[ask]: https://github.com/softprops/coffeescripted-sbt/issues
 
