@@ -5,7 +5,7 @@ name := "coffeescripted-sbt"
 organization := "me.lessis"
 
 version <<= (sbtVersion) { (sv) =>
-  val v = "0.2.1-SNAPSHOT"
+  val v = "0.2.1"
   if(sv.startsWith("0.11")) v
   else error("unsupported version of sbt: %s" format sv)
 }
@@ -14,7 +14,9 @@ libraryDependencies += "rhino" % "js" % "1.7R2"
 
 publishMavenStyle := true
 
-publishTo :=  Some(Resolver.file("lessis repo", new java.io.File("/var/www/repo")))
+publishTo := Some("Scala Tools Nexus" at "http://nexus.scala-tools.org/content/repositories/releases/")
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 seq(scriptedSettings: _*)
 
