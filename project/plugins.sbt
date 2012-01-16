@@ -1,5 +1,7 @@
-libraryDependencies <++= (sbtVersion) { sv => Seq(
-    //"net.databinder" %% "posterous-sbt" % ("0.3.0_sbt" + sv)
-    "org.scala-tools.sbt" %% "scripted-plugin" % sv
-  )
-}
+libraryDependencies <+= (sbtVersion)("org.scala-tools.sbt" %% "scripted-plugin" % _)
+
+resolvers ++= Seq(
+  "less is" at "http://repo.lessis.me",
+  "coda" at "http://repo.codahale.com")
+
+addSbtPlugin("me.lessis" % "ls-sbt" % "0.1.1")
