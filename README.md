@@ -12,8 +12,6 @@ In your project, define a file for plugin library dependencies, `project/plugins
 
 And add the following lines
 
-    resolvers += "less is" at "http://repo.lessis.me"
-
     addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.1")
 
 In your `build.sbt` file add the following line
