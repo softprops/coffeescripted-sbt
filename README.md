@@ -14,7 +14,7 @@ And add the following lines
 
     resolvers += "less is" at "http://repo.lessis.me"
 
-    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.0")
+    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.1")
 
 In your `build.sbt` file add the following line
 
@@ -52,6 +52,6 @@ You can override this behavior by overriding the `resourceManaged` setting scope
 
 This was converted into a plugin based on a [gist](https://gist.github.com/1018046) by [zentroupe](https://gist.github.com/zentrope) targeting sbt 0.11.*
 
-This plugin currently uses the v1.1.1 version of the coffeescript js compiler.
+This plugin currently uses the v1.2.0 version of the coffeescript js compiler.
 
 Doug Tangren (softprops) 2011
