@@ -4,7 +4,7 @@
 
 - the `http://repo.lessis.me` resolver is no longer needed for this plugin. This and all future artifacts will be published to scala tools.
 
-* for future reference, If you happen to plan on using the [1.2.0][cc] CoffeeScript compiler and you just so happen to use a compiler that understands, [reserved words][rw] like `static`, follow the fix mentioned here [here][csfix] or [here][csfix2] and save yourself an afternoon.
+* for future reference, If you happen to plan on using the [1.2.0][cc] CoffeeScript compiler and you just so happen to use a Javascript interpreter that understands, [reserved words][rw] like `static`, follow the fix mentioned here [here][csfix] or [here][csfix2] and save yourself an afternoon.
 
 org.mozilla.javascript.EvaluatorException: missing name after . operator
 
