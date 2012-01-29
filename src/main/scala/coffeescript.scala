@@ -25,11 +25,11 @@ object Plugin extends sbt.Plugin {
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
 
-  private def compileSources(compiler: Compiler, charset: Charset, log: Logger)(pair: (File, File)) =
+  private def compileSources(bare: Boolean, charset: Charset, log: Logger)(pair: (File, File)) =
     try {
       val (coffee, js) = pair
       log.debug("Compiling %s" format coffee)
-      compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString).fold({ err =>
+      Compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, bare).fold({ err =>
         sys.error(err)
       }, { compiled =>
         IO.write(js, compiled)
@@ -45,7 +45,7 @@ object Plugin extends sbt.Plugin {
   private def compiled(under: File) = (under ** "*.js").get
 
   private def compileChanged(sources: File, target: File, incl: FileFilter, excl: FileFilter,
-                             compiler: Compiler, charset: Charset, log: Logger) =
+                             bare: Boolean, charset: Charset, log: Logger) =
     (for (coffee <- sources.descendentsExcept(incl, excl).get;
           js <- javascript(sources, coffee, target)
       if (coffee newerThan js)) yield {
@@ -56,7 +56,7 @@ object Plugin extends sbt.Plugin {
           compiled(target)
         case xs =>
           log.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
-          xs map compileSources(compiler, charset, log)
+          xs map compileSources(bare, charset, log)
           log.debug("Compiled %s CoffeeScripts" format xs.size)
           compiled(target)
       }
@@ -72,7 +72,7 @@ object Plugin extends sbt.Plugin {
     (streams, sourceDirectory in coffee, resourceManaged in coffee,
      filter in coffee, excludeFilter in coffee, charset in coffee, bare in coffee) map {
       (out, sourceDir, targetDir, incl, excl, charset, bare) =>
-        compileChanged(sourceDir, targetDir, incl, excl, compiler(bare), charset, out.log)
+        compileChanged(sourceDir, targetDir, incl, excl, bare, charset, out.log)
     }
 
   // move defaultExcludes to excludeFilter in unmanagedSources later
@@ -81,8 +81,6 @@ object Plugin extends sbt.Plugin {
       (sourceDir, filt, excl) =>
          sourceDir.descendentsExcept(filt, excl).get
     }
-
-  private def compiler(bare: Boolean) = if(bare) Compiler(true) else Compiler()
 
   def coffeeSettingsIn(c: Configuration): Seq[Setting[_]] =
     inConfig(c)(coffeeSettings0 ++ Seq(
