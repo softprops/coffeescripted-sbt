@@ -13,6 +13,7 @@ object Plugin extends sbt.Plugin {
   object CoffeeKeys {
     val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
     val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
+    val iced = SettingKey[Boolean]("iced", """When true, The coffee command will compile vanilla CoffeeScript and "Iced" CoffeeScript sources """)
     // possible candidate for community key repo
     val charset = SettingKey[Charset]("charset", "Sets the character encoding used in file IO. Defaults to utf-8")
     // think about changing to filter in the next rel (maybe, I like the way coffee:filter sounds :))
@@ -23,13 +24,13 @@ object Plugin extends sbt.Plugin {
   type Compiler = { def compile(src: String): Either[String, String] }
 
   private def javascript(sources: File, coffee: File, targetDir: File) =
-    Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js")))
+    Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js").replace(".iced", ".js")))
 
-  private def compileSources(bare: Boolean, charset: Charset, log: Logger)(pair: (File, File)) =
+  private def compileSources(bare: Boolean, charset: Charset, iced: Boolean, log: Logger)(pair: (File, File)) =
     try {
       val (coffee, js) = pair
       log.debug("Compiling %s" format coffee)
-      Compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, bare).fold({ err =>
+      (if(iced) Iced else Vanilla).compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, bare).fold({ err =>
         sys.error(err)
       }, { compiled =>
         IO.write(js, compiled)
@@ -44,8 +45,9 @@ object Plugin extends sbt.Plugin {
 
   private def compiled(under: File) = (under ** "*.js").get
 
-  private def compileChanged(sources: File, target: File, incl: FileFilter, excl: FileFilter,
-                             bare: Boolean, charset: Charset, log: Logger) =
+  private def compileChanged(
+    sources: File, target: File, incl: FileFilter, excl: FileFilter,
+    bare: Boolean, charset: Charset, iced: Boolean, log: Logger) =
     (for (coffee <- sources.descendentsExcept(incl, excl).get;
           js <- javascript(sources, coffee, target)
       if (coffee newerThan js)) yield {
@@ -56,7 +58,7 @@ object Plugin extends sbt.Plugin {
           compiled(target)
         case xs =>
           log.info("Compiling %d CoffeeScripts to %s" format(xs.size, target))
-          xs map compileSources(bare, charset, log)
+          xs map compileSources(bare, charset, iced, log)
           log.debug("Compiled %s CoffeeScripts" format xs.size)
           compiled(target)
       }
@@ -70,9 +72,9 @@ object Plugin extends sbt.Plugin {
 
   private def coffeeCompilerTask =
     (streams, sourceDirectory in coffee, resourceManaged in coffee,
-     filter in coffee, excludeFilter in coffee, charset in coffee, bare in coffee) map {
-      (out, sourceDir, targetDir, incl, excl, charset, bare) =>
-        compileChanged(sourceDir, targetDir, incl, excl, bare, charset, out.log)
+     filter in coffee, excludeFilter in coffee, charset in coffee, bare in coffee, iced in coffee) map {
+      (out, sourceDir, targetDir, incl, excl, charset, bare, iced) =>
+        compileChanged(sourceDir, targetDir, incl, excl, bare, charset, iced, out.log)
     }
 
   // move defaultExcludes to excludeFilter in unmanagedSources later
@@ -100,8 +102,9 @@ object Plugin extends sbt.Plugin {
 
   def coffeeSettings0: Seq[Setting[_]] = Seq(
     bare in coffee := false,
+    iced in coffee := false,
     charset in coffee := Charset.forName("utf-8"),
-    filter in coffee := "*.coffee",
+    filter in coffee <<= (iced in coffee)((iced) => if(iced) "*.coffee" || "*.iced" else "*.coffee"),
     // change to (excludeFilter in Global) when dropping support of sbt 0.10.*
     excludeFilter in coffee := (".*" - ".") || HiddenFileFilter,
     unmanagedSources in coffee <<= coffeeSourcesTask,

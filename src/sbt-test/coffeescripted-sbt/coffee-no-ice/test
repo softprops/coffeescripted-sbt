@@ -1,0 +1,5 @@
+# should generate javascript from coffeescript and ignore iced files
+> coffee
+$ exists target/scala-2.9.1/resource_managed/main/js/foo.js
+> contents target/scala-2.9.1/resource_managed/main/js/foo.js fixtures/foo.js
+-$ exists target/scala-2.9.1/resource_managed/main/js/bar.js

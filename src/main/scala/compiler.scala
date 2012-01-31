@@ -9,8 +9,7 @@ import java.nio.charset.Charset
  * @author daggerrz
  * @author doug (to a lesser degree)
  */
-
-object Compiler {
+abstract class Compiler(src: String) {
   val utf8 = Charset.forName("utf-8")
 
   /**
@@ -36,8 +35,8 @@ object Compiler {
     val scope = ctx.initStandardObjects()
     ctx.evaluateReader(
       scope,
-      new InputStreamReader(getClass().getResourceAsStream("/coffee-script.js"), utf8),
-      "coffee-script.js", 1, null
+      new InputStreamReader(getClass().getResourceAsStream("/%s" format src), utf8),
+      src, 1, null
     )
 
     scope
@@ -56,3 +55,7 @@ object Compiler {
     }
   }
 }
+
+object Vanilla extends Compiler("vanilla/coffee-script.js")
+
+object Iced extends Compiler("iced/coffee-script.js")
