@@ -47,6 +47,9 @@ The enhanged [iced][iced] compiler adds two new asyncronous control primatives `
 
     (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
 
+Note, iced coffeescript is a superset of coffeescript, meaning all of your coffeescript will work without change under the `iced` compiler. In iced mode, all `.coffee` and `.iced` files will get compiled using the `iced` compiler. You can revert back to standard coffeescript by leaving the `iced` setting as `false`. Only `.coffee` files will be compiled under the default coffee compiler, leaving you free to mix `ice` with your coffee safely.
+
+
 By default, CoffeeScript sources are resolved under `src/main/coffee` and compiled javascript will by copied to `target/scala-2.9.1/resource_managed/main/js`
 
 You can override this behavior by overriding the `resourceManaged` setting scoped to your configration and the `CoffeeKeys.coffee` task. Below is an example you can append to your build definition which will copy generated javascript to target/:scala-version/your_preference/js
