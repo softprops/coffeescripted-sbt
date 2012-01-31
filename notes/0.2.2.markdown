@@ -4,8 +4,11 @@ If you've got `n` coffeescript source files, don't evaluate the coffeescript com
 
 * Consider `icing` your coffee [#11][i11].
 
-Is your plain vanilla coffeescript just not cutting it anymore. Try [iced coffee][iced] with support for better asyncronous primitives `await` and `defer`. I recommend checking out the comparisons to vanilla coffeescript in terms of how they react to change in requirements.
+Is your plain vanilla coffeescript just not cutting it anymore. Try [iced coffee][iced] with support for better asyncronous primitives `await` and `defer`. I recommend checking out the comparisons to vanilla coffeescript in terms of how they react to change in requirements. Enable this but changing `CoffeeKeys` `iced` setting to true.
 
+    (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
+
+Note, iced coffeescript is a superset of coffeescript, so all of your coffeescrpt will work without change within the `iced` compiler. In iced mode, all `.coffee` and `.iced` files will get compiled using the `iced` compiler. You can revert back to standard coffeescript by leaving the `iced` setting as `false`. Only `.coffee` files will be compiled, leaving you free to mix `ice` with your coffee safely.
 
 
 [stephenjudkins]: https://github.com/stephenjudkins
