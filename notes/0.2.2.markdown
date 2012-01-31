@@ -8,8 +8,7 @@ Is your plain vanilla coffeescript just not cutting it anymore. Try [iced coffee
 
     (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
 
-Note, iced coffeescript is a superset of coffeescript, so all of your coffeescrpt will work without change within the `iced` compiler. In iced mode, all `.coffee` and `.iced` files will get compiled using the `iced` compiler. You can revert back to standard coffeescript by leaving the `iced` setting as `false`. Only `.coffee` files will be compiled, leaving you free to mix `ice` with your coffee safely.
-
+Note, iced coffeescript is a superset of coffeescript, meaning all of your coffeescript will work without change under the `iced` compiler. In iced mode, all `.coffee` and `.iced` files will get compiled using the `iced` compiler. You can revert back to standard coffeescript by leaving the `iced` setting as `false`. Only `.coffee` files will be compiled under the default coffee compiler, leaving you free to mix `ice` with your coffee safely.
 
 [stephenjudkins]: https://github.com/stephenjudkins
 [i10]: https://github.com/softprops/coffeescripted-sbt/pull/10
