@@ -2,7 +2,7 @@
 
 If you've got `n` coffeescript source files, don't evaluate the coffeescript compiler `n` times, do it once per sbt session.
 
-* Consider `icing` your coffee [#11].
+* Consider `icing` your coffee [#11][i11].
 
 Is your plain vanilla coffeescript just not cutting it anymore. Try [iced coffee][iced] with support for better asyncronous primitives `await` and `defer`. I recommend checking out the comparisons to vanilla coffeescript in terms of how they react to change in requirements.
 
