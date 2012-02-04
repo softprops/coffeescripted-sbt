@@ -43,7 +43,7 @@ CoffeeScripted enables `bare`-style javascript as well. Bare-style javascript is
 
     (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
 
-The enhanged [iced][iced] compiler adds two new asyncronous control primatives `await` and `defer`. To take advanage of them use the `iced` setting
+The enhanced [iced][iced] compiler adds two new asyncronous control primatives `await` and `defer`. To take advanage of them use the `iced` setting
 
     (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
 
