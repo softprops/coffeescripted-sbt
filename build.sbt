@@ -10,7 +10,7 @@ version <<= (sbtVersion) { (sv) =>
   else error("unsupported version of sbt: %s" format sv)
 }
 
-libraryDependencies += "rhino" % "js" % "1.7R2"
+libraryDependencies += "org.mozilla" % "rhino" % "1.7R3"
 
 publishMavenStyle := true
 
