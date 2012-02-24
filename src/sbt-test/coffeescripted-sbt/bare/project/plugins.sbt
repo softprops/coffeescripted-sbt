@@ -1,1 +1,1 @@
-addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.2-SNAPSHOT")
+addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "latest.integration")
