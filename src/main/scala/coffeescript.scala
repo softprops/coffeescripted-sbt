@@ -30,7 +30,8 @@ object Plugin extends sbt.Plugin {
     try {
       val (coffee, js) = pair
       log.debug("Compiling %s" format coffee)
-      (if(iced) Iced else Vanilla).compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, bare).fold({ err =>
+      val compiler = if(iced) Iced else Vanilla
+      compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, bare).fold({ err =>
         sys.error(err)
       }, { compiled =>
         IO.write(js, compiled)
@@ -39,7 +40,8 @@ object Plugin extends sbt.Plugin {
       })
     } catch { case e: Exception =>
       throw new RuntimeException(
-        "error occured while compiling %s: %s" format(pair._1, e.getMessage), e
+        "error occured while compiling %s with %s: %s" format(
+          pair._1, if(iced) Iced else Vanilla, e.getMessage), e
       )
     }
 
