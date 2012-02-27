@@ -12,12 +12,6 @@ version <<= (sbtVersion) { (sv) =>
 
 libraryDependencies += "org.mozilla" % "rhino" % "1.7R3"
 
-publishMavenStyle := true
-
-publishTo := Some("Scala Tools Nexus" at "http://nexus.scala-tools.org/content/repositories/releases/")
-
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
-
 seq(scriptedSettings: _*)
 
 seq(lsSettings:_*)
@@ -30,3 +24,24 @@ licenses <<= (version)(v => Seq(
   ("MIT", url("https://github.com/softprops/coffeescripted-sbt/blob/%s/LICENSE" format v))
 ))
 
+publishTo := Some(Resolver.url("sbt-plugin-releases", url(
+  "http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"
+))(Resolver.ivyStylePatterns))
+
+publishArtifact in Test := false
+
+publishMavenStyle := false
+
+pomExtra := (
+  <scm>
+    <url>git@github.com:softprops/coffeescripted-sbt.git</url>
+    <connection>scm:git:git@github.com:softprops/coffeescripted-sbt.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>softprops</id>
+      <name>Doug Tangren</name>
+      <url>https://github.com/softprops</url>
+    </developer>
+  </developers>
+)
