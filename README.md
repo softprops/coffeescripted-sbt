@@ -12,7 +12,13 @@ In your project, define a file for plugin library dependencies, `project/plugins
 
 And add the following lines
 
-    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.1")
+    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.2")
+    
+If you have not already append the sbt community plugin resolver to your plugin definition, add the following line as well
+
+    resolvers += Resolver.url("sbt-plugin-releases",
+      new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"))(
+        Resolver.ivyStylePatterns)
 
 In your `build.sbt` file add the following line
 
@@ -43,7 +49,7 @@ CoffeeScripted enables `bare`-style javascript as well. Bare-style javascript is
 
     (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
 
-The enhanced [iced][iced] compiler adds two new asyncronous control primatives `await` and `defer`. To take advanage of them use the `iced` setting
+The enhanced [iced][iced] compiler adds two new asyncronous control primatives `await` and `defer`. To take advanage of them use, the `iced` setting
 
     (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
 
