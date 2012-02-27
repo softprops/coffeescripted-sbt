@@ -4,7 +4,7 @@ If you've got `n` coffeescript source files, don't evaluate the coffeescript com
 
 * Consider `icing` your coffee [#11][i11].
 
-Is your plain vanilla coffeescript just not cutting it anymore. Try [iced coffee][iced] with support for better asyncronous primitives `await` and `defer`. I recommend checking out the comparisons to vanilla coffeescript in terms of how they react to change in requirements. Enable this but changing `CoffeeKeys` `iced` setting to true.
+Is your plain vanilla coffeescript just not cutting it anymore. Try [iced coffee][iced] with support for better asyncronous primitives `await` and `defer`. I recommend checking out the comparisons to vanilla coffeescript in terms of how they react to change in requirements. The arguments are [pretty convincing][icedexample]. Enable this but changing `CoffeeKeys` `iced` setting to true.
 
     (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
 
@@ -14,3 +14,4 @@ Note, iced coffeescript is a superset of coffeescript, meaning all of your coffe
 [i10]: https://github.com/softprops/coffeescripted-sbt/pull/10
 [i11]: https://github.com/softprops/coffeescripted-sbt/issues/11
 [iced]: http://maxtaco.github.com/coffee-script/
+[icedexample]: http://maxtaco.github.com/coffee-script/#iced
