@@ -5,7 +5,7 @@ name := "coffeescripted-sbt"
 organization := "me.lessis"
 
 version <<= (sbtVersion) { (sv) =>
-  val v = "0.2.2-SNAPSHOT"
+  val v = "0.2.2"
   if(sv.startsWith("0.11")) v
   else error("unsupported version of sbt: %s" format sv)
 }
