@@ -27,7 +27,7 @@ In your `build.sbt` file add the following line
 ## Settings
     coffee # compiles CoffeeScript source files
     bare(for coffee) # removes function wrapper from generated JavaScript sources
-    iced(for coffee) # compiles coffeescript used the [iced][iced] coffeescript compile
+    iced(for coffee) # compiles coffeescript use the iced coffeescript compiler
     charset(for coffee) # sets the character encoding used to generate files
     exclude-filter(for coffee) # filter for files ignored by plugin
     unmanaged-sources(for coffee) # lists resolved CoffeeScript sources

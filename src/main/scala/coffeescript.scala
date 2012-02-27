@@ -13,7 +13,7 @@ object Plugin extends sbt.Plugin {
   object CoffeeKeys {
     val coffee = TaskKey[Seq[File]]("coffee", "Compile coffee sources.")
     val bare = SettingKey[Boolean]("bare", "Compile coffee sources without top-level function wrapper.")
-    val iced = SettingKey[Boolean]("iced", """When true, The coffee command will compile vanilla CoffeeScript and "Iced" CoffeeScript sources """)
+    val iced = SettingKey[Boolean]("iced", """When true, The coffee task will compile vanilla CoffeeScript and "Iced" CoffeeScript sources""")
     // possible candidate for community key repo
     val charset = SettingKey[Charset]("charset", "Sets the character encoding used in file IO. Defaults to utf-8")
     // think about changing to filter in the next rel (maybe, I like the way coffee:filter sounds :))
