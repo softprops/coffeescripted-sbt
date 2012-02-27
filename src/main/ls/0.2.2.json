@@ -1,0 +1,26 @@
+
+{
+ "organization":"me.lessis",
+ "name":"coffeescripted-sbt",
+ "version":"0.2.2",
+ "description":"Sbt plugin for compiling CoffeeScript sources",
+ "site":"",
+ "tags":["sbt","coffeescript"],
+ "docs":"",
+ "licenses": [{
+   "name": "MIT",
+   "url": "https://github.com/softprops/coffeescripted-sbt/blob/0.2.2/LICENSE"
+  }],
+ "resolvers": ["http://scala-tools.org/repo-releases"],
+ "dependencies": [{
+   "organization":"org.mozilla",
+   "name": "rhino",
+   "version": "1.7R3"
+  },{
+   "organization":"org.scala-tools.sbt",
+   "name": "scripted-sbt_2.9.1",
+   "version": "0.11.2"
+  }],
+ "scalas": ["2.9.1"],
+ "sbt": true
+}
