@@ -4,7 +4,7 @@ resolvers += Resolver.url("scalasbt", new URL(
 
 addSbtPlugin("com.jsuereth" % "xsbt-gpg-plugin" % "0.6")
 
-libraryDependencies <+= (sbtVersion)("org.scala-tools.sbt" %% "scripted-plugin" % _)
+libraryDependencies <+= (sbtVersion)("org.scala-sbt" %% "scripted-plugin" % _)
 
 resolvers ++= Seq(
   "less is" at "http://repo.lessis.me",
