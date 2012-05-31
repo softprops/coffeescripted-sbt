@@ -1,5 +1,5 @@
 (function() {
-  var iced, search, __iced_k,
+  var iced, search, __iced_k, __iced_k_noop,
     __slice = [].slice;
 
   iced = {
@@ -37,11 +37,12 @@
       return null;
     }
   };
-  __iced_k = function() {};
+  __iced_k = __iced_k_noop = function() {};
 
   search = function(keyword, cb) {
-    var host, json, url, ___iced_passed_deferral, __iced_deferrals,
+    var host, json, url, ___iced_passed_deferral, __iced_deferrals, __iced_k,
       _this = this;
+    __iced_k = __iced_k_noop;
     ___iced_passed_deferral = iced.findDeferral(arguments);
     host = "http://search.twitter.com/";
     url = "" + host + "/search.json?q=" + keyword + "&callback=?";

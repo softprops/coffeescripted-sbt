@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "fetching latest iced coffeescript compiler"
-CS=http://maxtaco.github.com/coffee-script/extras/coffee-script.js
+CS=https://raw.github.com/maxtaco/coffee-script/iced/extras/coffee-script.js
 
 if [[ -f src/main/resources/iced/coffee-script.js && ! -f src/main/resources/iced/coffee-script.js.released ]]; then
   echo "stashing old iced coffee"

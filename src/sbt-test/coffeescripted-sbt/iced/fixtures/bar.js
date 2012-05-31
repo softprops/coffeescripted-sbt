@@ -1,5 +1,5 @@
 (function() {
-  var iced, parallelSearch, __iced_k,
+  var iced, parallelSearch, __iced_k, __iced_k_noop,
     __slice = [].slice;
 
   iced = {
@@ -37,11 +37,12 @@
       return null;
     }
   };
-  __iced_k = function() {};
+  __iced_k = __iced_k_noop = function() {};
 
   parallelSearch = function(keywords, cb) {
-    var i, k, out, ___iced_passed_deferral, __iced_deferrals,
+    var i, k, out, ___iced_passed_deferral, __iced_deferrals, __iced_k,
       _this = this;
+    __iced_k = __iced_k_noop;
     ___iced_passed_deferral = iced.findDeferral(arguments);
     out = [];
     (function(__iced_k) {
