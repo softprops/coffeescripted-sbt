@@ -1,5 +1,5 @@
 # should only compile coffee sources
 # matching filter
 > coffee
-$ exists target/scala-2.9.1/resource_managed/main/js/foo.js
--$ exists target/scala-2.9.1/resource_managed/main/js/bar.no.js
+$ exists target/scala-2.9.2/resource_managed/main/js/foo.js
+-$ exists target/scala-2.9.2/resource_managed/main/js/bar.no.js

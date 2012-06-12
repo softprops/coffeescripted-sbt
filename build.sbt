@@ -24,9 +24,9 @@ licenses <<= (version)(v => Seq(
   ("MIT", url("https://github.com/softprops/coffeescripted-sbt/blob/%s/LICENSE" format v))
 ))
 
-//publishTo := Some(Classpaths.sbtPluginReleases)
+publishTo := Some(Classpaths.sbtPluginReleases)
 
-publishTo := Some(Resolver.url("sbt-plugin-releases", new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns))
+//publishTo := Some(Resolver.url("sbt-plugin-releases", new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns))
 
 publishArtifact in Test := false
 

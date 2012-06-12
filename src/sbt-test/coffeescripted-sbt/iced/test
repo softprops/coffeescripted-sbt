@@ -1,6 +1,6 @@
 # should generate javascript from iced coffeescript with .iced and .coffee extensions
 > coffee
-$ exists target/scala-2.9.1/resource_managed/main/js/foo.js
-> contents target/scala-2.9.1/resource_managed/main/js/foo.js fixtures/foo.js
-$ exists target/scala-2.9.1/resource_managed/main/js/bar.js
-> contents target/scala-2.9.1/resource_managed/main/js/bar.js fixtures/bar.js
+$ exists target/scala-2.9.2/resource_managed/main/js/foo.js
+> contents target/scala-2.9.2/resource_managed/main/js/foo.js fixtures/foo.js
+$ exists target/scala-2.9.2/resource_managed/main/js/bar.js
+> contents target/scala-2.9.2/resource_managed/main/js/bar.js fixtures/bar.js
