@@ -12,7 +12,7 @@ In your project, define a file for plugin library dependencies, `project/plugins
 
 And add the following lines
 
-    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.2")
+    addSbtPlugin("me.lessis" % "coffeescripted-sbt" % "0.2.3")
     
 If you have not already append the sbt community plugin resolver to your plugin definition, add the following line as well
 
