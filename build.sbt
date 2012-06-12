@@ -5,8 +5,8 @@ name := "coffeescripted-sbt"
 organization := "me.lessis"
 
 version <<= (sbtVersion) { (sv) =>
-  val v = "0.2.3-SNAPSHOT"
-  if(sv.startsWith("0.11")) v
+  val v = "0.2.3"
+  if (sv.startsWith("0.11") || sv.startsWith("0.12")) v
   else error("unsupported version of sbt: %s" format sv)
 }
 
@@ -24,9 +24,9 @@ licenses <<= (version)(v => Seq(
   ("MIT", url("https://github.com/softprops/coffeescripted-sbt/blob/%s/LICENSE" format v))
 ))
 
-publishTo := Some(Resolver.url("sbt-plugin-releases", url(
-  "http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"
-))(Resolver.ivyStylePatterns))
+//publishTo := Some(Classpaths.sbtPluginReleases)
+
+publishTo := Some(Resolver.url("sbt-plugin-releases", new URL("http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-releases/"))(Resolver.ivyStylePatterns))
 
 publishArtifact in Test := false
 
