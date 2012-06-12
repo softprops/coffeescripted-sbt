@@ -1,0 +1,13 @@
+## Notice
+
+Published for the 0.11.3 and 0.12.0 lines lines of sbt
+
+## Compiler upgrades
+
+* upgraded embeded [vanilla][cs] and [iced][iced] coffee compilers. fixes [issue # 13][13]. See coffeescript's [changelog][cscl] for the specifics.
+
+
+[cs]: http://coffeescript.org
+[cscl]: http://coffeescript.org/#changelog
+[iced]: http://maxtaco.github.com/coffee-script/
+[13]: https://github.com/softprops/coffeescripted-sbt/issues/13
