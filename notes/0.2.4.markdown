@@ -1,0 +1,8 @@
+### Maintanence release
+
+* Adds support for the latest coffeescript 1.4.0 compiler. See its release notes [here][coffeesnotes]
+* Adds support for the latest ice-coffeescript 1.3.3f compiler. 
+* Fixed sbt [deprecation warning][de]
+
+[de]: https://github.com/harrah/xsbt/blob/0.12.0/util/io/Path.scala#L164
+[coffeenotes]: https://github.com/jashkenas/coffee-script/compare/1.3.3...1.4.0
