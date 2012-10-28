@@ -4,13 +4,11 @@ name := "coffeescripted-sbt"
 
 organization := "me.lessis"
 
-version <<= (sbtVersion) { (sv) =>
-  val v = "0.2.3"
-  if (sv.startsWith("0.11") || sv.startsWith("0.12")) v
-  else error("unsupported version of sbt: %s" format sv)
-}
+version := "0.2.4-SNAPSHOT"
 
 libraryDependencies += "org.mozilla" % "rhino" % "1.7R3"
+
+scalacOptions += Opts.compile.deprecation
 
 seq(scriptedSettings: _*)
 
