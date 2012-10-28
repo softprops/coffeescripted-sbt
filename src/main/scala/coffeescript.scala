@@ -50,7 +50,7 @@ object Plugin extends sbt.Plugin {
   private def compileChanged(
     sources: File, target: File, incl: FileFilter, excl: FileFilter,
     bare: Boolean, charset: Charset, iced: Boolean, log: Logger) =
-    (for (coffee <- sources.descendentsExcept(incl, excl).get;
+    (for (coffee <- sources.descendantsExcept(incl, excl).get;
           js <- javascript(sources, coffee, target)
       if (coffee newerThan js)) yield {
         (coffee, js)
@@ -83,7 +83,7 @@ object Plugin extends sbt.Plugin {
   private def coffeeSourcesTask =
     (sourceDirectory in coffee, filter in coffee, excludeFilter in coffee) map {
       (sourceDir, filt, excl) =>
-         sourceDir.descendentsExcept(filt, excl).get
+         sourceDir.descendantsExcept(filt, excl).get
     }
 
   def coffeeSettingsIn(c: Configuration): Seq[Setting[_]] =
