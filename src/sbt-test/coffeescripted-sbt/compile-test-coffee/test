@@ -1,0 +1,12 @@
+# compile should compile main sources
+> compile
+$ exists target/scala-2.9.2/resource_managed/main/js/hello.js
+> contents target/scala-2.9.2/resource_managed/main/js/hello.js fixtures/hello.js
+
+# (but not test sources)
+-$ exists target/scala-2.9.2/resource_managed/test/js/hello-test.js
+
+# test:compile should compile test sources
+> test:compile
+$ exists target/scala-2.9.2/resource_managed/test/js/hello-test.js
+> contents target/scala-2.9.2/resource_managed/test/js/hello-test.js fixtures/hello-test.js
