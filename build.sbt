@@ -8,6 +8,8 @@ version := "0.2.4-SNAPSHOT"
 
 libraryDependencies += "org.mozilla" % "rhino" % "1.7R3"
 
+libraryDependencies += "me.lessis" %% "coffeehaus" % "0.1.0-SNAPSHOT"
+
 scalacOptions += Opts.compile.deprecation
 
 seq(scriptedSettings: _*)

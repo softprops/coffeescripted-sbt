@@ -1,11 +1,12 @@
 package coffeescript
 
+import coffeehaus.{ Compile => CoffeeCompile, _ }
+import java.nio.charset.Charset
+import java.io.File
 import sbt._
 import sbt.Keys._
 import sbt.Project.Initialize
 import scala.collection.JavaConversions._
-import java.nio.charset.Charset
-import java.io.File
 
 object Plugin extends sbt.Plugin {
   import CoffeeKeys._
@@ -21,8 +22,6 @@ object Plugin extends sbt.Plugin {
     val excludeFilter = SettingKey[FileFilter]("exclude-filter", "Filter for excluding files from default directories.")
   }
 
-  type Compiler = { def compile(src: String): Either[String, String] }
-
   private def javascript(sources: File, coffee: File, targetDir: File) =
     Some(new File(targetDir, IO.relativize(sources, coffee).get.replace(".coffee",".js").replace(".iced", ".js")))
 
@@ -30,9 +29,9 @@ object Plugin extends sbt.Plugin {
     try {
       val (coffee, js) = pair
       log.debug("Compiling %s" format coffee)
-      val compiler = if(iced) Iced else Vanilla
-      compiler.compile(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, bare).fold({ err =>
-        sys.error(err)
+      val compiler = if (iced) Iced else Vanilla
+      compiler(io.Source.fromFile(coffee)(io.Codec(charset)).mkString, Options(bare = bare)).fold({ err =>
+        sys.error(err.msg)
       }, { compiled =>
         IO.write(js, compiled)
         log.debug("Wrote to file %s" format js)
