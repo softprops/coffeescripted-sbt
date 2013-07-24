@@ -38,7 +38,7 @@ In your `build.sbt` file add the following line
 
 ## Customization
 
-By default, generated JavaScript resources are wrapped in annonymous module.
+By default, generated JavaScript resources are wrapped in an anonymous module.
 
     (function() {
     
@@ -50,7 +50,7 @@ CoffeeScripted enables `bare`-style JavaScript as well. Bare-style JavaScript is
 
     (CoffeeKeys.bare in (Compile, CoffeeKeys.coffee)) := true
 
-The enhanced [iced][iced] compiler adds two new asynchronous control primitives `await` and `defer`. To take advanage of them, use the `iced` setting.
+The enhanced [iced][iced] compiler adds two new asynchronous control primitives `await` and `defer`. To take advantage of them, use the `iced` setting.
 
     (CoffeeKeys.iced in (Compile, CoffeeKeys.coffee)) := true
 
